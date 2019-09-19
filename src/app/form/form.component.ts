@@ -26,5 +26,9 @@ export class FormComponent implements OnInit {
   save(formModel) {
     let json: string = JSON.stringify(formModel);
     console.log(json)
+    this.formModel= []
+    this.formGroup = this.formService.createFormGroup(this.formModel);
+    this.formModel = this.formService.fromJSON(json);
+    this.formGroup = this.formService.createFormGroup(this.formModel);
   }
 }

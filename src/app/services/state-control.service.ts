@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { DynamicFormModel, DynamicFormControlModel, DynamicInputModel, DynamicCheckboxModel, DynamicFormArrayModel, DynamicTextAreaModel, DynamicSliderModel, DynamicCheckboxGroupModel, DynamicRadioGroupModel, DynamicFormService } from '@ng-dynamic-forms/core';
+import { Subject, of } from 'rxjs';
+import { DynamicFormModel, DynamicFormControlModel, DynamicInputModel, DynamicCheckboxModel, DynamicFormArrayModel, DynamicTextAreaModel, DynamicSliderModel, DynamicCheckboxGroupModel, DynamicRadioGroupModel, DynamicFormService, DynamicSelectModel } from '@ng-dynamic-forms/core';
 import { FormGroup } from '@angular/forms';
 import { Event } from '../event'
 @Injectable({
@@ -20,12 +20,20 @@ export class StateControlService {
       maxLength: 'Number',
       placeholder: 'String',
       required: 'Boolean'
-      
+
     });
     this.map.set("Email", {
       id: 'String',
       label: 'String',
       maxLength: 'Number',
+      placeholder: 'String',
+      required: 'Boolean'
+
+    });
+    this.map.set("Password", {
+      id: 'String',
+      label: 'String',
+      minLength: 'Number',
       placeholder: 'String',
       required: 'Boolean'
 
@@ -71,6 +79,17 @@ export class StateControlService {
       label: 'String',
       required: 'Boolean'
     })
+
+    this.map.set("Select", {
+      id: 'String',
+      label: 'String',
+      options:
+        [{
+          label: 'String',
+          value: 'String'
+        }],
+      required: 'Boolean'
+    });
 
     this.eventDispatcher.subscribe((data: Event) => this.createProperties(data))
   }
@@ -176,6 +195,10 @@ export class StateControlService {
           object['group'] = []
         }
         else {
+          if (this.control == 'Select') {
+            object['options'] = of([]);
+          }
+
           object['options'] = [];
         }
 
@@ -197,8 +220,8 @@ export class StateControlService {
             element.groups.forEach(ell => {
               let test = ell.group[0].id;
               let a = object['validators']
-                a[test] =ell.group[0].value
-              
+              a[test] = ell.group[0].value
+
             })
             break;
           case 'options':
@@ -224,20 +247,30 @@ export class StateControlService {
         }
       }
       else {
-        object[element.id]= element._value
+        object[element.id] = element._value
       }
 
     });
     let form;
     switch (this.control) {
-
       case 'Input':
         form = new DynamicInputModel(
           object
         )
         break;
       case 'Email':
-         object['inputType'] = 'email'
+        object['inputType'] = 'email'
+        form = new DynamicInputModel(
+          object
+        )
+        break
+      case 'Select':
+        form = new DynamicSelectModel<String>(
+          object
+        )
+        break
+      case 'Password':
+        object['inputType'] = 'password'
         form = new DynamicInputModel(
           object
         )

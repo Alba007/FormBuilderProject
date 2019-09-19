@@ -10,7 +10,7 @@ import { FormGroup, FormArray } from '@angular/forms';
 })
 export class AppComponent implements OnInit {
   title = 'FormBuilderReactive';
-  items = ['Input', 'Email', 'Checkbox', 'Radiobutton', 'CheckboxGroup', 'slider', 'textarea'];
+  items = ['Input', 'Email', 'Password', 'Checkbox', 'Radiobutton', 'CheckboxGroup', 'slider', 'textarea', 'Select'];
   constructor(
     private stateFormService: StateControlService) {
 
