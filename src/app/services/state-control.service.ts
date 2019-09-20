@@ -53,6 +53,8 @@ export class StateControlService {
       options:
         [{
           id: 'String',
+
+          
           label: 'String'
         }],
       required: 'Boolean'

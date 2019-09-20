@@ -9,11 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormComponent } from './form/form.component';
 import { MatListModule } from '@angular/material/list';
+import { AllFormsModule } from './all-forms/all-forms.module';
+
 @NgModule({
   declarations: [
     AppComponent,
     PropertiesComponent,
     FormComponent,
+    
+    
 
   ],
   imports: [
@@ -22,7 +26,9 @@ import { MatListModule } from '@angular/material/list';
     FormsModule,
     ReactiveFormsModule,
     ReactiveFormsModule, BrowserAnimationsModule,
-    MatListModule
+    MatListModule,
+    AllFormsModule,
+    
     
   ],
   providers: [],
