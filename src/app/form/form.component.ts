@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DynamicFormModel, DynamicFormService, DynamicSelectModel } from '@ng-dynamic-forms/core';
 import { FormGroup } from '@angular/forms';
 import { StateControlService } from '../services/state-control.service';
+
 import { of } from 'rxjs';
 @Component({
   selector: 'app-form',
@@ -22,6 +23,15 @@ export class FormComponent implements OnInit {
       this.showForm = true;
     }
     )
+  }
+  controlDetails(controlModel) {
+    console.log(controlModel)
+    const event = {
+      type: 'addFormControl',
+      payload: controlModel
+    };
+    this.stateControlService.eventDispatcher.next(event)
+    
   }
   save(formModel) {
     let json: string = JSON.stringify(formModel);
