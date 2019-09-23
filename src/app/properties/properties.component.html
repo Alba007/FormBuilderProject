@@ -5,5 +5,5 @@
       <button type="button" (click)="insertItem(group.context, group.index + 1)">+</button>
     </ng-template>
   </dynamic-material-form ><br/>
-  <button type="submit" (click)="save(formModel)">Save</button>
+  <button mat-button [disabled]="!formGroup.valid" type="submit" (click)="save(formModel)">Save</button>
 </form>

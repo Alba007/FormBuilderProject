@@ -47,7 +47,7 @@ export class PropertiesComponent implements OnInit {
       type: 'addProperties',
       payload: newModel
     };
-    //console.log(newModel)
     this.stateControlService.eventDispatcher.next(event);
+    this.formModel= []
   }
 }
