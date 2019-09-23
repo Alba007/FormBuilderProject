@@ -28,76 +28,76 @@ export class StateControlService {
 
   constructor(private formService: DynamicFormService) {
     this.map.set('INPUT', {
-      id: 'Text',
-      label: 'Text',
-      maxLength: 'Number',
-      placeholder: 'Text',
+      id: 'text',
+      label: 'text',
+      maxLength: 'number',
+      placeholder: 'text',
       required: 'Boolean'
     });
     this.map.set('EMAIL', {
-      id: 'Text',
-      label: 'Text',
-      maxLength: 'Number',
-      placeholder: 'Text',
+      id: 'text',
+      label: 'text',
+      maxLength: 'number',
+      placeholder: 'text',
       validators: {
         required: 'Boolean'
       }
     });
     this.map.set('PASSWORD', {
-      id: 'Text',
-      label: 'Text',
-      minLength: 'Number',
-      placeholder: 'Text',
+      id: 'text',
+      label: 'text',
+      minLength: 'number',
+      placeholder: 'text',
       required: 'Boolean'
     });
     this.map.set('CHECKBOX', {
-      id: 'Text',
-      label: 'Text',
+      id: 'text',
+      label: 'text',
       required: 'Boolean'
     });
     this.map.set('RADIO_GROUP', {
-      id: 'Text',
-      label: 'Text',
+      id: 'text',
+      label: 'text',
       options:
         [{
-          label: 'Text',
-          value: 'Text'
+          label: 'text',
+          value: 'text'
         }],
       required: 'Boolean'
     });
 
     this.map.set('CHECKBOX_GROUP', {
-      id: 'Text',
-      label: 'Text',
+      id: 'text',
+      label: 'text',
       options:
         [{
-          id: 'Text',
-          label: 'Text'
+          id: 'text',
+          label: 'text'
         }],
       required: 'Boolean'
     });
 
     this.map.set('SLIDER', {
-      id: 'Text',
-      min: 'Number',
-      max: 'Number',
+      id: 'text',
+      min: 'number',
+      max: 'number',
       vertical: 'Boolean',
       required: 'Boolean'
     });
 
     this.map.set('TEXTAREA', {
-      id: 'Text',
-      label: 'Text',
+      id: 'text',
+      label: 'text',
       required: 'Boolean'
     });
 
     this.map.set('SELECT', {
-      id: 'Text',
-      label: 'Text',
+      id: 'text',
+      label: 'text',
       options:
         [{
-          label: 'Text',
-          value: 'Text'
+          label: 'text',
+          value: 'text'
         }],
       required: 'Boolean'
     });
@@ -126,7 +126,7 @@ export class StateControlService {
     for (const controlValues in pair) {
       controlValues === 'id' ? req = true : req = null;
       valueOfControl = data.payload[controlValues];
-      if (pair[controlValues] === 'Number' || pair[controlValues] === 'Text') {
+      if (pair[controlValues] === 'number' || pair[controlValues] === 'text') {
         formControl.push(new DynamicInputModel({
           id: controlValues,
           label: controlValues,
@@ -142,27 +142,29 @@ export class StateControlService {
           }));
         }
       }
-      if (controlValues === 'options') {
+      if (controlValues === 'options' || controlValues === 'group') {
+        debugger;
         let length;
-        data.payload._options ? length = data.payload._options.length : length = 3;
-        let test = '';
-        if (data.payload._options) {
-          let i = 0;
+        let attr = '_' + controlValues;
+        data.payload[attr] ? length = data.payload[attr].length : length = 3;
+        if (data.payload[attr]) {
+          console.log(data.payload, 'test');
+          let i = -1;
           formControl.push(new DynamicFormArrayModel({
-            id: i < length ? data.payload._options[i].value : 'test',
+            id: controlValues,
             initialCount: length,
             groupFactory: () => {
               return [
                 new DynamicInputModel({
                   id: 'myInput',
-                  label: '',
-                  value: i < length ? data.payload._options[i++].value : 'test'
+                  label: 'Input',
+                  value: (i < length && i >= 0) ? data.payload[attr][i++].value : i++
                 })];
             }
           }));
         } else {
           formControl.push(new DynamicFormArrayModel({
-            id: 'options',
+            id: controlValues,
             initialCount: length,
             groupFactory: () => {
 
@@ -175,19 +177,6 @@ export class StateControlService {
             }
           }));
         }
-
-        //
-        // const formArray = this.formService.findById('options', formControl) as DynamicFormArrayModel;
-        // console.log(formArray);
-        // let p = 0;
-        // if (this.object) {
-        //   console.log('sduhet te hyje')
-        //   const obj = this.object['options'];
-        //   formArray.groups.forEach(eachEl => {
-        //     eachEl.group[0]['value'] = obj[p].value;
-        //     p++;
-        //   });
-        // }
       }
       if (controlValues === 'validators') {
         for (const x in pair[controlValues]) {
