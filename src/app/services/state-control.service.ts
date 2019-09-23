@@ -19,6 +19,7 @@ import {Event} from '../event';
   providedIn: 'root'
 })
 export class StateControlService {
+  object: any;
   control: string;
   eventDispatcher = new Subject<Event>();
   dataModel = new Subject<DynamicFormModel>();
@@ -142,79 +143,96 @@ export class StateControlService {
         }
       }
       if (controlValues === 'options') {
-        // debugger ;
         let length;
         data.payload._options ? length = data.payload._options.length : length = 3;
-        let i = 0;
         let test = '';
-        formControl.push(new DynamicFormArrayModel({
-          id: 'options',
-          initialCount: length,
-          groupFactory: () => {
-            if (i < length) {
-              if (data.payload._options) {
-                test = data.payload._options[i].value;
-                console.log(data.payload._options[i].value);
-
-              } else {
-                test = '';
-              }
+        if (data.payload._options) {
+          let i = 0;
+          formControl.push(new DynamicFormArrayModel({
+            id: i < length ? data.payload._options[i].value : 'test',
+            initialCount: length,
+            groupFactory: () => {
+              return [
+                new DynamicInputModel({
+                  id: 'myInput',
+                  label: '',
+                  value: i < length ? data.payload._options[i++].value : 'test'
+                })];
             }
-            i++;
-            return [
-              new DynamicInputModel({
-                id: 'myInput',
-                label: test,
-                value: test
-              })
-            ];
-          }
-        }));
-      } else {
-        if (controlValues === 'validators') {
-          for (const x in pair[controlValues]) {
-            formControl.push(new DynamicFormArrayModel({
-              id: 'validators',
-              initialCount: 1,
-              groupFactory: () => {
-                return [
-                  new DynamicCheckboxModel({
-                    id: x,
-                    label: x
-                  })];
-              }
-            }));
-          }
+          }));
+        } else {
+          formControl.push(new DynamicFormArrayModel({
+            id: 'options',
+            initialCount: length,
+            groupFactory: () => {
+
+              return [
+                new DynamicInputModel({
+                  id: 'myInput',
+                  label: '',
+                  value: ''
+                })];
+            }
+          }));
+        }
+
+        //
+        // const formArray = this.formService.findById('options', formControl) as DynamicFormArrayModel;
+        // console.log(formArray);
+        // let p = 0;
+        // if (this.object) {
+        //   console.log('sduhet te hyje')
+        //   const obj = this.object['options'];
+        //   formArray.groups.forEach(eachEl => {
+        //     eachEl.group[0]['value'] = obj[p].value;
+        //     p++;
+        //   });
+        // }
+      }
+      if (controlValues === 'validators') {
+        for (const x in pair[controlValues]) {
+          formControl.push(new DynamicFormArrayModel({
+            id: 'validators',
+            initialCount: 1,
+            groupFactory: () => {
+              return [
+                new DynamicCheckboxModel({
+                  id: x,
+                  label: x
+                })];
+            }
+          }));
         }
       }
+
     }
     this.dataModel.next(formControl);
   }
 
   onAddProperties(data) {
     let attr = '';
-    const object = {id: ''};
+    this.object = {id: ''};
     if (this.control === 'SELECT') {
       attr = 'options';
-      object[attr] = of([]);
+      this.object[attr] = of([]);
     }
     data.payload.forEach(element => {
       if (element.type === 'ARRAY') {
         switch (element.id) {
           case 'validators':
             attr = 'validators';
-            object[attr] = {};
+            this.object[attr] = {};
             element.groups.forEach(ell => {
               const id = ell.group[0].id;
-              const a = object[attr];
+              const a = this.object[attr];
               a[id] = ell.group[0].value;
             });
             break;
           case 'options':
             attr = 'options';
-            object[attr] = [];
+            this.object[attr] = [];
             attr = 'group';
-            object[attr] = [];
+            this.object[attr] = [];
             element.groups.forEach(arrayElement => {
               const optObject = {
                 id: arrayElement.group[0]._value,
@@ -222,67 +240,67 @@ export class StateControlService {
                 value: arrayElement.group[0]._value
               };
               if (this.control === 'CHECKBOX_GROUP') {
-                object[attr].push(new DynamicCheckboxModel(
+                this.object[attr].push(new DynamicCheckboxModel(
                   optObject
                 ));
               } else {
                 attr = 'options';
-                object[attr].push(optObject);
+                this.object[attr].push(optObject);
               }
             });
             break;
         }
       } else {
-        object[element.id] = element._value;
+        this.object[element.id] = element._value;
       }
     });
     let form;
     switch (this.control) {
       case 'INPUT':
         form = new DynamicInputModel(
-          object
+          this.object
         );
         break;
       case 'EMAIL':
         attr = 'email';
-        object[attr] = 'email';
+        this.object[attr] = 'email';
         form = new DynamicInputModel(
-          object
+          this.object
         );
         break;
       case 'SELECT':
         form = new DynamicSelectModel<string>(
-          object
+          this.object
         );
         break;
       case 'PASSWORD':
         attr = 'password';
-        object[attr] = 'password';
+        this.object[attr] = 'password';
         form = new DynamicInputModel(
-          object
+          this.object
         );
         break;
       case 'CHECKBOX':
         form = new DynamicCheckboxModel(
-          object);
+          this.object);
         break;
       case 'RADIO_GROUP':
         form = new DynamicRadioGroupModel<string>(
-          object
+          this.object
         );
         break;
       case 'CHECKBOX_GROUP':
         form = new DynamicCheckboxGroupModel(
-          object
+          this.object
         );
         break;
       case 'SLIDER':
         form = new DynamicSliderModel(
-          object
+          this.object
         );
         break;
       case 'TEXTAREA':
-        form = new DynamicTextAreaModel(object);
+        form = new DynamicTextAreaModel(this.object);
         break;
     }
     this.formModel.next(form);
