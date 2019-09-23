@@ -10,11 +10,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormComponent } from './form/form.component';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { FormControlComponent } from './form-control/form-control.component';
 @NgModule({
   declarations: [
     AppComponent,
     PropertiesComponent,
-    FormComponent
+    FormComponent,
+    FormControlComponent
   ],
   imports: [
     BrowserModule,

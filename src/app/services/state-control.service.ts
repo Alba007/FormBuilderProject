@@ -114,9 +114,11 @@ export class StateControlService {
         break;
     }
   }
+
   onAddFormControl(data: Event) {
     const formControl: DynamicFormModel = [];
-    const pair = this.map.get(data.payload);
+    let pair;
+    data.payload.type ? pair = this.map.get(data.payload.type) : pair = this.map.get(data.payload);
     let valueOfControl;
     this.control = data.payload;
     let req;
@@ -140,14 +142,30 @@ export class StateControlService {
         }
       }
       if (controlValues === 'options') {
+        // debugger ;
+        let length;
+        data.payload._options ? length = data.payload._options.length : length = 3;
+        let i = 0;
+        let test = '';
         formControl.push(new DynamicFormArrayModel({
           id: 'options',
-          initialCount: 3,
+          initialCount: length,
           groupFactory: () => {
+            if (i < length) {
+              if (data.payload._options) {
+                test = data.payload._options[i].value;
+                console.log(data.payload._options[i].value);
+
+              } else {
+                test = '';
+              }
+            }
+            i++;
             return [
               new DynamicInputModel({
                 id: 'myInput',
-                label: 'My Input'
+                label: test,
+                value: test
               })
             ];
           }
@@ -200,7 +218,8 @@ export class StateControlService {
             element.groups.forEach(arrayElement => {
               const optObject = {
                 id: arrayElement.group[0]._value,
-                label: arrayElement.group[0]._value
+                label: arrayElement.group[0]._value,
+                value: arrayElement.group[0]._value
               };
               if (this.control === 'CHECKBOX_GROUP') {
                 object[attr].push(new DynamicCheckboxModel(

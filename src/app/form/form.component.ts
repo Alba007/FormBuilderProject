@@ -1,44 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import { DynamicFormModel, DynamicFormService, DynamicSelectModel } from '@ng-dynamic-forms/core';
-import { FormGroup } from '@angular/forms';
-import { StateControlService } from '../services/state-control.service';
+import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
+import {DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
+import {FormGroup} from '@angular/forms';
+import {StateControlService} from '../services/state-control.service';
 
-import { of } from 'rxjs';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements OnInit {
+export class FormComponent implements AfterViewInit {
   showForm = false;
-  formGroup: FormGroup
+  formGroup: FormGroup;
   formModel: DynamicFormModel = [];
-  constructor(private formService: DynamicFormService,
-    private stateControlService: StateControlService) { }
 
-  ngOnInit() {
-    this.stateControlService.formModel.subscribe(data => {
-      this.formModel.push(data)
-      this.formGroup = this.formService.createFormGroup(this.formModel);
-      this.showForm = true;
-    }
-    )
+  constructor(private formService: DynamicFormService,
+              private stateControlService: StateControlService,
+              private cd: ChangeDetectorRef) {
   }
+
+  ngAfterViewInit() {
+    this.cd.detectChanges();
+    this.stateControlService.formModel.subscribe(data => {
+        this.formModel.push(data);
+        this.formGroup = this.formService.createFormGroup(this.formModel);
+        this.showForm = true;
+      }
+    );
+  }
+
   controlDetails(controlModel) {
-    console.log(controlModel)
     const event = {
       type: 'addFormControl',
       payload: controlModel
     };
-    this.stateControlService.eventDispatcher.next(event)
-    
+    this.stateControlService.eventDispatcher.next(event);
   }
+
   save(formModel) {
-    let json: string = JSON.stringify(formModel);
-    console.log(json)
-    this.formModel= []
-    this.formGroup = this.formService.createFormGroup(this.formModel);
-    this.formModel = this.formService.fromJSON(json);
-    this.formGroup = this.formService.createFormGroup(this.formModel);
+    if (this.formGroup.valid) {
+      const json: string = JSON.stringify(formModel);
+      console.log(json);
+      this.formModel = [];
+      this.formGroup = this.formService.createFormGroup(this.formModel);
+      this.formModel = this.formService.fromJSON(json);
+      this.formGroup = this.formService.createFormGroup(this.formModel);
+    }
+    return;
   }
 }
