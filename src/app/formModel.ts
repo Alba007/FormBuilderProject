@@ -3,8 +3,7 @@ let model = {
     id: String,
     label: String,
     maxLength: Number,
-    placeholder: String,
-    required: Boolean
+    placeholder: String
   },
   checkbox:
   {

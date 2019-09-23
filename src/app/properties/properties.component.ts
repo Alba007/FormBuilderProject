@@ -1,35 +1,42 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { DynamicFormService, DynamicFormModel, DynamicFormArrayModel } from '@ng-dynamic-forms/core';
-import { FormGroup, FormArray } from '@angular/forms';
-import { StateControlService} from '../services/state-control.service';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {DynamicFormArrayModel, DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
+import {FormArray, FormGroup} from '@angular/forms';
+import {StateControlService} from '../services/state-control.service';
 
 @Component({
   selector: 'app-properties',
   templateUrl: './properties.component.html',
   styleUrls: ['./properties.component.css']
 })
-export class PropertiesComponent implements OnInit {
+export class PropertiesComponent implements AfterViewInit, OnInit {
   hasOptions = true;
-  formGroup: FormGroup
+  formGroup: FormGroup;
   formModel: DynamicFormModel = [];
   showForm = false;
   formArrayControl;
   formArrayModel;
-  constructor(private formService: DynamicFormService,
-    private stateControlService: StateControlService) {
-  }
 
-  ngOnInit() {
+  constructor(private formService: DynamicFormService,
+              private stateControlService: StateControlService,
+              private cd: ChangeDetectorRef) {}
+ngOnInit() {
+  this.stateControlService.dataModel.subscribe(data => {
+    this.formGroup = this.formService.createFormGroup(data);
+  });
+
+}
+  ngAfterViewInit() {
+    this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {
-      this.formGroup = this.formService.createFormGroup(data);
       this.formModel = data;
       this.showForm = true;
-      this.formArrayControl = this.formGroup.get("options") as FormArray;
-      this.formArrayModel = this.formService.findById("options", this.formModel)
+      this.formArrayControl = this.formGroup.get('options') as FormArray;
+      this.formArrayModel = this.formService.findById('options', this.formModel);
       this.hasOptions = this.formArrayControl != null;
     });
-
+    return this.formGroup.valid;
   }
+
   removeItem(context: DynamicFormArrayModel, index: number) {
     this.formService.removeFormArrayGroup(index, this.formArrayControl, context);
   }
@@ -37,13 +44,16 @@ export class PropertiesComponent implements OnInit {
   insertItem(context: DynamicFormArrayModel, index: number) {
     this.formService.insertFormArrayGroup(index, this.formArrayControl, context);
   }
+
   save(newModel) {
-    const event = {
-      type: 'addProperties',
-      payload: newModel
-    };
-    // console.log(newModel)
-    this.stateControlService.eventDispatcher.next(event);
-    this.formModel = [];
+    if (this.formGroup.valid) {
+      const event = {
+        type: 'addProperties',
+        payload: newModel
+      };
+      this.stateControlService.eventDispatcher.next(event);
+      this.formModel = [];
+    }
+    return;
   }
 }

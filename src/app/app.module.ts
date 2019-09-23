@@ -9,24 +9,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormComponent } from './form/form.component';
 import { MatListModule } from '@angular/material/list';
-import {MatButtonModule} from "@angular/material";
-
+import { MatButtonModule } from '@angular/material/button';
+import { FormControlComponent } from './form-control/form-control.component';
 @NgModule({
   declarations: [
     AppComponent,
     PropertiesComponent,
     FormComponent,
-
+    FormControlComponent
   ],
   imports: [
     BrowserModule,
     DynamicFormsMaterialUIModule,
     FormsModule,
     ReactiveFormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
+    ReactiveFormsModule, BrowserAnimationsModule,
     MatListModule,
     MatButtonModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
