@@ -34,7 +34,7 @@ ngOnInit() {
       this.formArrayModel = this.formService.findById('options', this.formModel);
       this.hasOptions = this.formArrayControl != null;
     });
-    return this.formGroup.valid;
+  //  return this.formGroup.valid;
   }
 
   removeItem(context: DynamicFormArrayModel, index: number) {
