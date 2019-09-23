@@ -1,34 +1,22 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {FormBuilderComponent} from "./Formbuilder/form-builder.component";
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormModule} from './Formbuilder/form.module';
 
-import { AppComponent } from './app.component';
-import { PropertiesComponent } from './properties/properties.component';
-
-import { DynamicFormsMaterialUIModule } from '@ng-dynamic-forms/ui-material';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormComponent } from './form/form.component';
-import { MatListModule } from '@angular/material/list';
-import { MatButtonModule } from '@angular/material/button';
-import { FormControlComponent } from './form-control/form-control.component';
 @NgModule({
   declarations: [
     AppComponent,
-    PropertiesComponent,
-    FormComponent,
-    FormControlComponent
+    FormBuilderComponent
   ],
   imports: [
+    FormModule,
     BrowserModule,
-    DynamicFormsMaterialUIModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ReactiveFormsModule, BrowserAnimationsModule,
-    MatListModule,
-    MatButtonModule
-
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

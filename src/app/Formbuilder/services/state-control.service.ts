@@ -13,7 +13,7 @@ import {
   DynamicSliderModel,
   DynamicTextAreaModel
 } from '@ng-dynamic-forms/core';
-import {Event} from '../event';
+import {Event} from '../../event';
 
 @Injectable({
   providedIn: 'root'
@@ -145,18 +145,18 @@ export class StateControlService {
       if (controlValues === 'options') {
         let length;
         data.payload._options ? length = data.payload._options.length : length = 3;
-        let test = '';
+        const test = '';
         if (data.payload._options) {
-          let i = 0;
+          let i = -1;
           formControl.push(new DynamicFormArrayModel({
-            id: i < length ? data.payload._options[i].value : 'test',
+            id: 'test',
             initialCount: length,
             groupFactory: () => {
               return [
                 new DynamicInputModel({
                   id: 'myInput',
                   label: '',
-                  value: i < length ? data.payload._options[i++].value : 'test'
+                  value: (i < length && i >= 0) ? data.payload._options[i++].value : i++
                 })];
             }
           }));
