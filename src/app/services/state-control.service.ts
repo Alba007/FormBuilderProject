@@ -101,16 +101,11 @@ export class StateControlService {
     const array = Array.from(this.map);
     array.map((value) => {
       const formControl: DynamicFormModel = [];
-      // console.log(Array.from(value[1]))
       if (value[0] === data.payload) {
         this.control = data.payload;
-        // console.log(value)
         const pair = value[1];
         let arr = Object.keys(pair).map((key) => [key, pair[key]]);
-        //   console.log(arr)
-        // per secilen property te nje form control do krijohet nje form control me vete
         arr.forEach(element => {
-          // console.log(element)
           switch (element[1]) {
             case 'String':
               formControl.push(new DynamicInputModel({
@@ -199,7 +194,6 @@ export class StateControlService {
         }
       }
     });
-    // onsole.log(object)
     const properties = data.payload;
     properties.forEach(element => {
       // console.log(element, 'ajo qe vjen nga properties')
