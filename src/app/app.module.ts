@@ -9,6 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormComponent } from './form/form.component';
 import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { FormControlComponent } from './form-control/form-control.component';
 import { AllFormsModule } from './all-forms/all-forms.module';
 
 @NgModule({
@@ -16,8 +18,10 @@ import { AllFormsModule } from './all-forms/all-forms.module';
     AppComponent,
     PropertiesComponent,
     FormComponent,
-    
-    
+    FormControlComponent
+    FormComponent,
+
+
 
   ],
   imports: [
@@ -28,8 +32,8 @@ import { AllFormsModule } from './all-forms/all-forms.module';
     ReactiveFormsModule, BrowserAnimationsModule,
     MatListModule,
     AllFormsModule,
-    
-    
+
+
   ],
   providers: [],
   bootstrap: [AppComponent]
