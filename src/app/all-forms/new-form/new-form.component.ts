@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
-import { ComponentCommunicationService } from 'src/app/services/component-communication.service';
+import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {ComponentCommunicationService} from 'src/app/services/component-communication.service';
+import {Router} from '@angular/router';
+import {JsonStructure} from '../models/JsonStructure';
 
 @Component({
   selector: 'app-new-form',
@@ -13,9 +13,15 @@ import { ComponentCommunicationService } from 'src/app/services/component-commun
 export class NewFormComponent implements OnInit {
   formGroup: FormGroup;
   updateMessage = true;
-  allForms = []
-  constructor(private formBuilder: FormBuilder,@Inject(MAT_DIALOG_DATA) public data: any,
-  public dialogRef: MatDialogRef<NewFormComponent>,private communicationService:ComponentCommunicationService) { 
+  allForms = [];
+  private json = {name: 'ok'};
+  myForm: JsonStructure = {};
+
+  constructor(private formBuilder: FormBuilder,
+              @Inject(MAT_DIALOG_DATA) public data: any,
+              public dialogRef: MatDialogRef<NewFormComponent>,
+              private communicationService: ComponentCommunicationService,
+              private router: Router) {
 
   }
 
@@ -23,24 +29,28 @@ export class NewFormComponent implements OnInit {
    this.createForm()
   }
 
-  createForm(){
-    //const id=this.calculateId();
+  createForm() {
     this.formGroup = this.formBuilder.group({
-      //'id': [id, [Validators.required]],
-      'name': [null, [Validators.required]],
-      'description': [null, [Validators.required]],
-      
-    })
+      name: [null, [Validators.required]],
+      description: [null, [Validators.required]],
+
+    });
     this.communicationService.newForm.next(this.formGroup)
 
-  
-  
+
+
 }
 
-save(){
-  console.log(this.formGroup)
-  this.dialogRef.close({data:this.formGroup})
-}
+  save() {
+    console.log(this.formGroup);
+    this.dialogRef.close();
+    this.myForm.name = this.formGroup.getRawValue().name;
+    this.myForm.description = this.formGroup.getRawValue().description;
+    this.myForm.form = {};
+    const json = this.myForm;
+    history.pushState({data: {json}}, '', '');
+    this.router.navigate(['createForm'], {state: {data: {json}}});
+  }
 
 
 }

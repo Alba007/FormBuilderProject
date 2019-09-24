@@ -1,14 +1,16 @@
 import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-all-forms',
-  template: `<app-forms></app-forms>`,
+  templateUrl: './all-forms.component.html',
 })
 export class AllFormsComponent implements OnInit {
 
-  constructor() {
+  constructor(public router: Router) {
   }
 
   ngOnInit() {
+    // router.navigate(['homepage']);
   }
 }
