@@ -1,0 +1,23 @@
+.items {
+  width: 30%;
+  height: 700px;
+  background-color: aliceblue;
+  display: inline-block;
+}
+
+.properties {
+  width: 30%;
+  height: 700px;
+  background-color: aliceblue;
+  display: inline-block;
+  position: relative;
+  float: right ;
+}
+.form {
+  width: 30%;
+  height: 700px;
+  background-color: aliceblue;
+  display: inline-block;
+  position: absolute;
+  left:536px;
+}

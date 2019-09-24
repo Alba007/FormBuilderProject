@@ -1,5 +1,5 @@
-export interface JsonStructure{
-    name?:string,
-    description?:string,
-    form?:any
+export interface JsonStructure {
+  name?: string;
+  description?: string;
+  form?: any;
 }
