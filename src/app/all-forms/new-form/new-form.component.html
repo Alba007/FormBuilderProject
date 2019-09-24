@@ -1,14 +1,14 @@
 
-<form [formGroup]="formGroup" (ngSubmit)="save(formGroup.value)" >
+<form [formGroup]="formGroup" (ngSubmit)="save()" >
 
   <mat-form-field class="form-element">
     <input matInput placeholder="Name" formControlName="name">
-   
+
   </mat-form-field>
 
   <mat-form-field class="form-element">
     <input matInput placeholder="Description" formControlName="description">
-    
+
   </mat-form-field>
 
   <div class="form-element">

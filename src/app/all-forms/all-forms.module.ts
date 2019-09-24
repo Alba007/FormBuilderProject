@@ -1,12 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsComponent } from './forms/forms.component';
-import { NewFormComponent } from './new-form/new-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatRippleModule } from '@angular/material/core';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsComponent} from './forms/forms.component';
+import {NewFormComponent} from './new-form/new-form.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatRippleModule} from '@angular/material/core';
+import {AllFormsComponent} from './all-forms.component';
 
 @NgModule({
   declarations: [FormsComponent, NewFormComponent],
@@ -18,7 +19,9 @@ import { MatRippleModule } from '@angular/material/core';
     MatInputModule,
     MatRippleModule
   ],
-  exports:[FormsComponent],
-  entryComponents:[NewFormComponent]
+  exports: [FormsComponent],
+  bootstrap: [AllFormsComponent],
+  entryComponents: [NewFormComponent]
+
 })
 export class AllFormsModule { }

@@ -12,7 +12,7 @@ import {
   DynamicSliderModel,
   DynamicTextAreaModel
 } from '@ng-dynamic-forms/core';
-import {Event} from '../event';
+import {Event} from '../../event';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { NewForm } from '../event';
+import { NewForm } from '../../event';
 
 @Injectable({
   providedIn: 'root'

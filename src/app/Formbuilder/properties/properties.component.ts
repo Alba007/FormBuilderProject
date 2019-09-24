@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {DynamicFormArrayModel, DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormArray, FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
@@ -8,23 +8,23 @@ import {StateControlService} from '../services/state-control.service';
   templateUrl: './properties.component.html',
   styleUrls: ['./properties.component.css']
 })
-export class PropertiesComponent implements AfterViewInit {
+export class PropertiesComponent implements AfterViewInit, OnInit {
   hasOptions = true;
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
   showForm = false;
   formArrayControl;
   formArrayModel;
-  pageLoaded = false;
 
   constructor(private formService: DynamicFormService,
               private stateControlService: StateControlService,
-              private cd: ChangeDetectorRef) {
-    this.stateControlService.dataModel.subscribe(data => {
-      this.formGroup = this.formService.createFormGroup(data);
-    });
-  }
+              private cd: ChangeDetectorRef) {}
+ngOnInit() {
+  this.stateControlService.dataModel.subscribe(data => {
+    this.formGroup = this.formService.createFormGroup(data);
+  });
 
+}
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {

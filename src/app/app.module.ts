@@ -1,37 +1,25 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
+import {FormBuilderComponent} from './Formbuilder/form-builder.component';
 import {AppComponent} from './app.component';
-import {PropertiesComponent} from './properties/properties.component';
-
-import {DynamicFormsMaterialUIModule} from '@ng-dynamic-forms/ui-material';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormComponent} from './form/form.component';
-import {MatListModule} from '@angular/material/list';
-import {FormControlComponent} from './form-control/form-control.component';
+import {FormModule} from './Formbuilder/form.module';
 import {AllFormsModule} from './all-forms/all-forms.module';
+import {AllFormsComponent} from './all-forms/all-forms.component';
+import {AllFormsRoutingModule} from "./all-forms/all-forms-routing.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    PropertiesComponent,
-    FormComponent,
-    FormControlComponent,
-    FormComponent,
-
-
+    FormBuilderComponent,
+    AllFormsComponent
   ],
   imports: [
-    BrowserModule,
-    DynamicFormsMaterialUIModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ReactiveFormsModule, BrowserAnimationsModule,
-    MatListModule,
+    FormModule,
     AllFormsModule,
-
-
+    BrowserModule,
+    BrowserAnimationsModule,
+    AllFormsRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

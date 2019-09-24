@@ -1,13 +1,13 @@
 .items {
   width: 30%;
-  height: 700px;
+  height: 300px;
   background-color: aliceblue;
   display: inline-block;
 }
 
 .properties {
   width: 30%;
-  height: 700px;
+  height: 300px;
   background-color: aliceblue;
   display: inline-block;
   position: relative;
@@ -15,7 +15,7 @@
 }
 .form {
   width: 30%;
-  height: 700px;
+  height: 300px;
   background-color: aliceblue;
   display: inline-block;
   position: absolute;
