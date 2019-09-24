@@ -143,7 +143,6 @@ export class StateControlService {
         }
       }
       if (controlValues === 'options' || controlValues === 'group') {
-        debugger;
         let length;
         let attr = '_' + controlValues;
         data.payload[attr] ? length = data.payload[attr].length : length = 3;

@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
+import { AllFormsComponent} from './all-forms.component';
+import {FormComponent} from "../Formbuilder/form/form.component";
 
 @NgModule({
   declarations: [FormsComponent, NewFormComponent],
@@ -18,7 +20,9 @@ import { MatRippleModule } from '@angular/material/core';
     MatInputModule,
     MatRippleModule
   ],
-  exports:[FormsComponent],
-  entryComponents:[NewFormComponent]
+  exports: [FormsComponent],
+  bootstrap: [AllFormsComponent],
+  entryComponents: [NewFormComponent]
+
 })
 export class AllFormsModule { }
