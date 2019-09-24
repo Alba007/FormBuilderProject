@@ -17,11 +17,9 @@ export class FormsComponent implements OnInit {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "80%";
+    dialogConfig.width = '80%';
     this.dialog.open(NewFormComponent, dialogConfig).afterClosed().subscribe(res => {
-      console.log("ho")
-    
-
+      console.log('ho');
 
       }
 
