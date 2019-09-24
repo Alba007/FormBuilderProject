@@ -24,9 +24,9 @@ export class NewFormComponent implements OnInit {
   }
 
   createForm(){
-    const id=this.calculateId();
+    //const id=this.calculateId();
     this.formGroup = this.formBuilder.group({
-      'id': [id, [Validators.required]],
+      //'id': [id, [Validators.required]],
       'name': [null, [Validators.required]],
       'description': [null, [Validators.required]],
       
