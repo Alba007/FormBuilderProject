@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { NewFormComponent } from '../new-form/new-form.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {NewFormComponent} from '../new-form/new-form.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-forms',
@@ -8,28 +9,26 @@ import { NewFormComponent } from '../new-form/new-form.component';
   styleUrls: ['./forms.component.css']
 })
 export class FormsComponent implements OnInit {
-
-  constructor(private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog, public router: Router) {
+  }
 
   ngOnInit() {
   }
-  openNewFormModal(){
+
+  openNewFormModal() {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     this.dialog.open(NewFormComponent, dialogConfig).afterClosed().subscribe(res => {
-      console.log('ho');
-
+        console.log('ho');
       }
-
     );
 
-
   }
 
 
-  }
+}
 
 
 

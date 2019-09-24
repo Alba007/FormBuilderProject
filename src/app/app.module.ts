@@ -6,6 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormModule} from './Formbuilder/form.module';
 import {AllFormsModule} from './all-forms/all-forms.module';
 import {AllFormsComponent} from './all-forms/all-forms.component';
+import {AllFormsRoutingModule} from "./all-forms/all-forms-routing.module";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import {AllFormsComponent} from './all-forms/all-forms.component';
     AllFormsModule,
     BrowserModule,
     BrowserAnimationsModule,
+    AllFormsRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
