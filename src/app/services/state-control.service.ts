@@ -6,7 +6,6 @@ import {
   DynamicFormArrayModel,
   DynamicFormControlModel,
   DynamicFormModel,
-  DynamicFormService,
   DynamicInputModel,
   DynamicRadioGroupModel,
   DynamicSelectModel,
@@ -24,13 +23,17 @@ export class StateControlService {
   eventDispatcher = new Subject<Event>();
   dataModel = new Subject<DynamicFormModel>();
   formModel = new Subject<DynamicFormControlModel>();
+  edit = new Subject<DynamicFormControlModel>();
   map = new Map();
+  formControl: DynamicFormModel;
+  toBeEdit = false;
 
-  constructor(private formService: DynamicFormService) {
+  constructor() {
     this.map.set('INPUT', {
       id: 'text',
       label: 'text',
       maxLength: 'number',
+      minLength: 'number',
       placeholder: 'text',
       required: 'Boolean'
     });
@@ -39,16 +42,16 @@ export class StateControlService {
       label: 'text',
       maxLength: 'number',
       placeholder: 'text',
-      validators: {
-        required: 'Boolean'
-      }
+
     });
     this.map.set('PASSWORD', {
       id: 'text',
       label: 'text',
+      maxLength: 'number',
       minLength: 'number',
       placeholder: 'text',
-      required: 'Boolean'
+      required: 'Boolean',
+
     });
     this.map.set('CHECKBOX', {
       id: 'text',
@@ -88,6 +91,7 @@ export class StateControlService {
     this.map.set('TEXTAREA', {
       id: 'text',
       label: 'text',
+      minLength: 'number',
       required: 'Boolean'
     });
 
@@ -101,7 +105,6 @@ export class StateControlService {
         }],
       required: 'Boolean'
     });
-
     this.eventDispatcher.subscribe((data: Event) => this.createProperties(data));
   }
 
@@ -117,85 +120,38 @@ export class StateControlService {
   }
 
   onAddFormControl(data: Event) {
-    const formControl: DynamicFormModel = [];
+    this.formControl = [];
     let pair;
-    data.payload.type ? pair = this.map.get(data.payload.type) : pair = this.map.get(data.payload);
+    if (data.payload.type) {
+      this.toBeEdit = true;
+      pair = this.map.get(data.payload.type);
+      this.control = data.payload.type;
+    } else {
+      this.toBeEdit = false;
+      pair = this.map.get(data.payload);
+      this.control = data.payload;
+    }
     let valueOfControl;
-    this.control = data.payload;
     let req;
     for (const controlValues in pair) {
       controlValues === 'id' ? req = true : req = null;
       valueOfControl = data.payload[controlValues];
       if (pair[controlValues] === 'number' || pair[controlValues] === 'text') {
-        formControl.push(new DynamicInputModel({
-          id: controlValues,
-          label: controlValues,
-          inputType: pair[controlValues],
-          value: valueOfControl,
-          required: req,
-        }));
+        this.createInputWithDifferentTypes(pair[controlValues], controlValues, req, valueOfControl);
       } else {
         if (pair[controlValues] === 'Boolean') {
-          formControl.push(new DynamicCheckboxModel({
-            id: controlValues,
-            label: controlValues
-          }));
+          this.createCheckbox(controlValues);
         }
       }
-      if (controlValues === 'options' || controlValues === 'group') {
-        debugger;
-        let length;
-        let attr = '_' + controlValues;
-        data.payload[attr] ? length = data.payload[attr].length : length = 3;
-        if (data.payload[attr]) {
-          console.log(data.payload, 'test');
-          let i = -1;
-          formControl.push(new DynamicFormArrayModel({
-            id: controlValues,
-            initialCount: length,
-            groupFactory: () => {
-              return [
-                new DynamicInputModel({
-                  id: 'myInput',
-                  label: 'Input',
-                  value: (i < length && i >= 0) ? data.payload[attr][i++].value : i++
-                })];
-            }
-          }));
+      if (controlValues === 'options') {
+        if (data.payload._options || data.payload.group) {
+          this.createOptionsFull(data, controlValues);
         } else {
-          formControl.push(new DynamicFormArrayModel({
-            id: controlValues,
-            initialCount: length,
-            groupFactory: () => {
-
-              return [
-                new DynamicInputModel({
-                  id: 'myInput',
-                  label: '',
-                  value: ''
-                })];
-            }
-          }));
+          this.createOptionsEmpty(controlValues);
         }
       }
-      if (controlValues === 'validators') {
-        for (const x in pair[controlValues]) {
-          formControl.push(new DynamicFormArrayModel({
-            id: 'validators',
-            initialCount: 1,
-            groupFactory: () => {
-              return [
-                new DynamicCheckboxModel({
-                  id: x,
-                  label: x
-                })];
-            }
-          }));
-        }
-      }
-
     }
-    this.dataModel.next(formControl);
+    this.dataModel.next(this.formControl);
   }
 
   onAddProperties(data) {
@@ -208,15 +164,6 @@ export class StateControlService {
     data.payload.forEach(element => {
       if (element.type === 'ARRAY') {
         switch (element.id) {
-          case 'validators':
-            attr = 'validators';
-            this.object[attr] = {};
-            element.groups.forEach(ell => {
-              const id = ell.group[0].id;
-              const a = this.object[attr];
-              a[id] = ell.group[0].value;
-            });
-            break;
           case 'options':
             attr = 'options';
             this.object[attr] = [];
@@ -243,55 +190,121 @@ export class StateControlService {
         this.object[element.id] = element._value;
       }
     });
+    const form = this.createFormControlDynamiclly();
+    if (this.toBeEdit) {
+      this.edit.next(form);
+      console.log(form);
+    } else {
+      this.formModel.next(form);
+    }
+
+  }
+
+  createOptionsFull(data: Event, controlValues) {
+    let attr = '';
+    if (data.payload.type === 'CHECKBOX_GROUP') {
+      attr = 'group';
+    } else {
+      attr = '_options';
+    }
+    length = data.payload[attr].length;
+    let i = -1;
+
+    this.formControl.push(new DynamicFormArrayModel({
+      id: controlValues,
+      initialCount: length,
+      groupFactory: () => {
+        return [
+          new DynamicInputModel({
+            id: 'myInput',
+            label: (i < length && i >= 0) ? data.payload[attr][i].label : '',
+            value: (i < length && i >= 0) ? data.payload[attr][i++].label : i++
+          })];
+      }
+    }));
+  }
+
+  createOptionsEmpty(controlValues) {
+    this.formControl.push(new DynamicFormArrayModel({
+      id: controlValues,
+      initialCount: 3,
+      groupFactory: () => {
+        return [
+          new DynamicInputModel({
+            id: 'myInput',
+            label: 'Item',
+          })];
+      }
+    }));
+  }
+
+  createCheckbox(controlValues) {
+    this.formControl.push(new DynamicCheckboxModel({
+      id: controlValues,
+      label: controlValues
+    }));
+  }
+
+  createInputWithDifferentTypes(type, controlValues, req, value) {
+    this.formControl.push(new DynamicInputModel({
+      id: controlValues,
+      label: controlValues,
+      inputType: type,
+      value,
+      required: req,
+    }));
+  }
+
+  createFormControlDynamiclly() {
     let form;
+    let attr;
     switch (this.control) {
       case 'INPUT':
         form = new DynamicInputModel(
           this.object
         );
-        break;
+        return form;
       case 'EMAIL':
         attr = 'email';
         this.object[attr] = 'email';
         form = new DynamicInputModel(
           this.object
         );
-        break;
+        return form;
       case 'SELECT':
         form = new DynamicSelectModel<string>(
           this.object
         );
-        break;
+        return form;
       case 'PASSWORD':
         attr = 'password';
         this.object[attr] = 'password';
         form = new DynamicInputModel(
           this.object
         );
-        break;
+        return form;
       case 'CHECKBOX':
         form = new DynamicCheckboxModel(
           this.object);
-        break;
+        return form;
       case 'RADIO_GROUP':
         form = new DynamicRadioGroupModel<string>(
           this.object
         );
-        break;
+        return form;
       case 'CHECKBOX_GROUP':
         form = new DynamicCheckboxGroupModel(
           this.object
         );
-        break;
+        return form;
       case 'SLIDER':
         form = new DynamicSliderModel(
           this.object
         );
-        break;
+        return form;
       case 'TEXTAREA':
         form = new DynamicTextAreaModel(this.object);
-        break;
+        return form;
     }
-    this.formModel.next(form);
   }
 }

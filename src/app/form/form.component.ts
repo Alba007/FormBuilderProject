@@ -12,6 +12,7 @@ export class FormComponent implements AfterViewInit {
   showForm = false;
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
+  pocChange: number;
 
   constructor(private formService: DynamicFormService,
               private stateControlService: StateControlService,
@@ -21,11 +22,16 @@ export class FormComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.formModel.subscribe(data => {
-        this.formModel.push(data);
-        this.formGroup = this.formService.createFormGroup(this.formModel);
-        this.showForm = true;
-      }
-    );
+      this.formModel.push(data);
+      this.formGroup = this.formService.createFormGroup(this.formModel);
+      this.showForm = true;
+    });
+    this.stateControlService.edit.subscribe(t => {
+
+      this.formModel[this.pocChange] = t;
+      this.formGroup = this.formService.createFormGroup(this.formModel);
+
+    });
   }
 
   controlDetails(controlModel) {
@@ -33,6 +39,7 @@ export class FormComponent implements AfterViewInit {
       type: 'addFormControl',
       payload: controlModel
     };
+    this.pocChange = this.formModel.indexOf(controlModel);
     this.stateControlService.eventDispatcher.next(event);
   }
 

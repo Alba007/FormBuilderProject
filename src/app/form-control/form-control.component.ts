@@ -19,6 +19,5 @@ export class FormControlComponent implements OnInit {
       payload: item
     };
     this.stateFormService.eventDispatcher.next(event);
-
   }
 }
