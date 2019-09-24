@@ -39,11 +39,8 @@ export class NewFormComponent implements OnInit {
 
 save(){
   console.log(this.formGroup)
-  this.dialogRef.close()
+  this.dialogRef.close({data:this.formGroup})
 }
 
-calculateId(){
-  return this.allForms.length?this.allForms.length+1:0;
 
-}
 }
