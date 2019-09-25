@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {NewFormComponent} from '../new-form/new-form.component';
 import {Router} from '@angular/router';
-import { JsonStructure } from '../models/JsonStructure';
 
 
 @Component({
@@ -12,11 +11,14 @@ import { JsonStructure } from '../models/JsonStructure';
 })
 export class FormsComponent implements OnInit {
 
+  private alljsons: any;
 
   constructor(private dialog: MatDialog, public router: Router) {
   }
 
   ngOnInit() {
+
+    this.alljsons = localStorage.getItem('name');
   }
 
   openNewFormModal() {
@@ -25,7 +27,6 @@ export class FormsComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     this.dialog.open(NewFormComponent, dialogConfig).afterClosed().subscribe(res => {
-
     });
   }
 

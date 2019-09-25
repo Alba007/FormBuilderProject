@@ -1,22 +1,23 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
-import { NewForm } from '../../event';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {NewForm} from '../event';
+import {JsonStructure} from '../../all-forms/models/JsonStructure';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
-  newform = new Subject<NewForm>();
+  newform = new Subject<JsonStructure>();
   editForm = new Subject<any>();
 
   constructor() {
     this.newform.subscribe(dat => {
-      localStorage.setItem(dat.id, JSON.stringify(dat));
-      //do hapet app components
-    })
-    this.editForm.subscribe(edit=> {
+      console.log(dat);
+      localStorage.setItem(dat.name, JSON.stringify(dat));
+    });
+    this.editForm.subscribe(edit => {
       JSON.parse(localStorage.getItem(edit));
-      //do hapet app components
-    })
+    });
   }
 }

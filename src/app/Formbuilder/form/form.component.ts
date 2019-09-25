@@ -3,7 +3,8 @@ import {DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
 import {Router} from '@angular/router';
-import { JsonStructure } from '../../all-forms/models/JsonStructure';
+import {JsonStructure} from '../../all-forms/models/JsonStructure';
+import {LocalStorageService} from '../services/local-storage.service';
 
 @Component({
   selector: 'app-form',
@@ -15,11 +16,20 @@ export class FormComponent implements AfterViewInit {
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
   pocChange: number;
+  formData: JsonStructure;
 
   constructor(private router: Router,
     private formService: DynamicFormService,
               private stateControlService: StateControlService,
-              private cd: ChangeDetectorRef) {
+              private cd: ChangeDetectorRef,
+              private localStorageService: LocalStorageService) {
+    this.stateControlService.formData.subscribe(t => {
+      this.formData = t;
+      this.formModel = this.formService.fromJSON(t.form);
+      this.formGroup = this.formService.createFormGroup(this.formModel);
+      this.showForm = true;
+
+    });
   }
 
   ngAfterViewInit() {
@@ -29,9 +39,8 @@ export class FormComponent implements AfterViewInit {
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
     });
-    this.stateControlService.edit.subscribe(t => {
-
-      this.formModel[this.pocChange] = t;
+    this.stateControlService.edit.subscribe(edit => {
+      this.formModel[this.pocChange] = edit;
       this.formGroup = this.formService.createFormGroup(this.formModel);
 
     });
@@ -49,10 +58,9 @@ export class FormComponent implements AfterViewInit {
   save(formModel) {
     if (this.formGroup.valid) {
       const json: string = JSON.stringify(formModel);
-      console.log(json);
+      this.formData.form = json;
+      this.localStorageService.newform.next(this.formData);
       this.formModel = [];
-      this.formGroup = this.formService.createFormGroup(this.formModel);
-      this.formModel = this.formService.fromJSON(json);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.router.navigate(['allForms']);
     }

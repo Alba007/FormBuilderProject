@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {StateControlService} from '../services/state-control.service';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-form-control',
@@ -14,12 +14,14 @@ export class FormControlComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    console.log(history.state.data);
+    console.log(history.state.data)
+    this.stateFormService.formData.next(history.state.data.json);
   }
   createFormControl(item) {
     const event = {
       type: 'addFormControl',
-      payload: item
+      payload: item,
+      formData: history.state.data
     };
     this.stateFormService.eventDispatcher.next(event);
   }

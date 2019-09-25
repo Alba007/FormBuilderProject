@@ -12,7 +12,8 @@ import {
   DynamicSliderModel,
   DynamicTextAreaModel
 } from '@ng-dynamic-forms/core';
-import {Event} from '../../event';
+import {Event} from '../event';
+import {JsonStructure} from '../../all-forms/models/JsonStructure';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class StateControlService {
   map = new Map();
   formControl: DynamicFormModel;
   toBeEdit = false;
+  formData = new Subject<JsonStructure>();
 
   constructor() {
     this.map.set('INPUT', {
@@ -104,6 +106,8 @@ export class StateControlService {
           value: 'text'
         }],
       required: 'Boolean'
+    });
+    this.formData.subscribe(data => {
     });
     this.eventDispatcher.subscribe((data: Event) => this.createProperties(data));
   }
@@ -193,7 +197,7 @@ export class StateControlService {
     const form = this.createFormControlDynamiclly();
     if (this.toBeEdit) {
       this.edit.next(form);
-      console.log(form);
+
     } else {
       this.formModel.next(form);
     }
