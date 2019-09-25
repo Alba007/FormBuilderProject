@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Injectable, ɵConsole} from '@angular/core';
+import {Subject, Observable} from 'rxjs';
 import {NewForm} from '../event';
 import {JsonStructure} from '../../all-forms/models/JsonStructure';
 
@@ -10,8 +10,11 @@ import {JsonStructure} from '../../all-forms/models/JsonStructure';
 export class LocalStorageService {
   newform = new Subject<JsonStructure>();
   editForm = new Subject<any>();
-
+jsonStructure:JsonStructure[]=[];
   constructor() {
+
+
+    
     this.newform.subscribe(dat => {
       console.log(dat);
       localStorage.setItem(dat.name, JSON.stringify(dat));
@@ -19,5 +22,20 @@ export class LocalStorageService {
     this.editForm.subscribe(edit => {
       JSON.parse(localStorage.getItem(edit));
     });
+  }
+
+
+  getAllFromLocalStorage():JsonStructure[]{
+    this.jsonStructure=[]
+    for (let i = 0; i<localStorage.length; i++) {
+      this.jsonStructure[i] = JSON.parse(localStorage.getItem(localStorage.key(i)))as JsonStructure;
+  }
+  console.log(localStorage)
+  return this.jsonStructure;
+  }
+
+  deleteItem(key){
+    localStorage.removeItem(key);
+
   }
 }
