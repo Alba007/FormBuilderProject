@@ -237,6 +237,7 @@ export class StateControlService {
           new DynamicInputModel({
             id: 'myInput',
             label: 'Item',
+            mask: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
           })];
       }
     }));
