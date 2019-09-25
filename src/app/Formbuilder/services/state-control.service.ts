@@ -37,13 +37,15 @@ export class StateControlService {
       maxLength: 'number',
       minLength: 'number',
       placeholder: 'text',
-      required: 'Boolean'
+      required: 'Boolean',
+      mask: []
     });
     this.map.set('EMAIL', {
       id: 'text',
       label: 'text',
       maxLength: 'number',
       placeholder: 'text',
+      mask: []
 
     });
     this.map.set('PASSWORD', {
@@ -53,6 +55,7 @@ export class StateControlService {
       minLength: 'number',
       placeholder: 'text',
       required: 'Boolean',
+      mask: []
 
     });
     this.map.set('CHECKBOX', {
@@ -94,7 +97,9 @@ export class StateControlService {
       id: 'text',
       label: 'text',
       minLength: 'number',
-      required: 'Boolean'
+      required: 'Boolean',
+      mask: []
+
     });
 
     this.map.set('SELECT', {
@@ -153,6 +158,10 @@ export class StateControlService {
         } else {
           this.createOptionsEmpty(controlValues);
         }
+      } else {
+        if (controlValues === 'mask') {
+          this.createInputWithDifferentTypes('mask', controlValues, req, valueOfControl);
+        }
       }
     }
     this.dataModel.next(this.formControl);
@@ -167,34 +176,39 @@ export class StateControlService {
     }
     data.payload.forEach(element => {
       if (element.type === 'ARRAY') {
-        switch (element.id) {
-          case 'options':
-            attr = 'options';
-            this.object[attr] = [];
-            attr = 'group';
-            this.object[attr] = [];
-            element.groups.forEach(arrayElement => {
-              const optObject = {
-                id: arrayElement.group[0]._value,
-                label: arrayElement.group[0]._value,
-                value: arrayElement.group[0]._value
-              };
-              if (this.control === 'CHECKBOX_GROUP') {
-                this.object[attr].push(new DynamicCheckboxModel(
-                  optObject
-                ));
-              } else {
-                attr = 'options';
-                this.object[attr].push(optObject);
-              }
-            });
-            break;
+        if (element.id === 'options') {
+          attr = 'options';
+          this.object[attr] = [];
+          attr = 'group';
+          this.object[attr] = [];
+          element.groups.forEach(arrayElement => {
+            const optObject = {
+              id: arrayElement.group[0]._value,
+              label: arrayElement.group[0]._value,
+              value: arrayElement.group[0]._value
+            };
+            if (this.control === 'CHECKBOX_GROUP') {
+              this.object[attr].push(new DynamicCheckboxModel(
+                optObject
+              ));
+            } else {
+              attr = 'options';
+              this.object[attr].push(optObject);
+            }
+          });
         }
       } else {
-        this.object[element.id] = element._value;
+        if (element.id === 'mask') {
+          this.object[element.id] = [];
+          this.object[element.id].push('/' + element.id + '/');
+        } else {
+          this.object[element.id] = element._value;
+        }
       }
     });
+
     const form = this.createFormControlDynamiclly();
+    console.log(form);
     if (this.toBeEdit) {
       this.edit.next(form);
 
@@ -236,8 +250,7 @@ export class StateControlService {
         return [
           new DynamicInputModel({
             id: 'myInput',
-            label: 'Item',
-            mask: ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+            label: 'Item'
           })];
       }
     }));
@@ -270,7 +283,7 @@ export class StateControlService {
         );
         return form;
       case 'EMAIL':
-        attr = 'email';
+        attr = 'inputType';
         this.object[attr] = 'email';
         form = new DynamicInputModel(
           this.object
@@ -282,7 +295,7 @@ export class StateControlService {
         );
         return form;
       case 'PASSWORD':
-        attr = 'password';
+        attr = 'inputType';
         this.object[attr] = 'password';
         form = new DynamicInputModel(
           this.object
