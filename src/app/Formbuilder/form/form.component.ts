@@ -2,6 +2,8 @@ import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
+import {Router} from '@angular/router';
+import { JsonStructure } from '../../all-forms/models/JsonStructure';
 
 @Component({
   selector: 'app-form',
@@ -14,7 +16,8 @@ export class FormComponent implements AfterViewInit {
   formModel: DynamicFormModel = [];
   pocChange: number;
 
-  constructor(private formService: DynamicFormService,
+  constructor(private router: Router,
+    private formService: DynamicFormService,
               private stateControlService: StateControlService,
               private cd: ChangeDetectorRef) {
   }
@@ -51,6 +54,7 @@ export class FormComponent implements AfterViewInit {
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.formModel = this.formService.fromJSON(json);
       this.formGroup = this.formService.createFormGroup(this.formModel);
+      this.router.navigate(['allForms']);
     }
     return;
   }
