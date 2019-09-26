@@ -23,19 +23,12 @@ export class FormComponent implements AfterViewInit {
               private cd: ChangeDetectorRef,
               private router: Router,
               private localStorageService: LocalStorageService) {
-    this.stateControlService.formData.subscribe(t => {
-      this.formData = t;
-      this.formModel = this.formService.fromJSON(t.form);
-      this.formGroup = this.formService.createFormGroup(this.formModel);
-      this.showForm = true;
-
-    });
+    console.log(history.state)
   }
 
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.formModel.subscribe(data => {
-      // data.mask = data.mask[0].split(',');
       this.formModel.push(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
@@ -58,12 +51,13 @@ export class FormComponent implements AfterViewInit {
 
   save(formModel) {
     if (this.formGroup.valid) {
-      const json: string = JSON.stringify(formModel);
+      const json: string = formModel;
       this.formData.form = json;
       this.localStorageService.newform.next(this.formData);
       this.formModel = [];
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.router.navigate(['allForms']);
+
     }
     return;
   }

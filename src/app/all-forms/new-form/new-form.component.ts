@@ -41,7 +41,7 @@ export class NewFormComponent implements OnInit {
     this.myForm.description = this.formGroup.getRawValue().description;
     this.myForm.form = [];
     const json = this.myForm;
-    history.pushState({data: {json}}, '', '');
+    history.replaceState({data: {json}}, '', '')
     this.router.navigate(['createForm'], {state: {data: {json}}});
   }
 

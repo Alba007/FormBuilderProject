@@ -19,6 +19,7 @@ import {JsonStructure} from '../../all-forms/models/JsonStructure';
   providedIn: 'root'
 })
 export class StateControlService {
+  testttt: String;
   object: any;
   control: string;
   eventDispatcher = new Subject<Event>();
@@ -160,7 +161,7 @@ export class StateControlService {
         }
       } else {
         if (controlValues === 'mask') {
-          this.createInputWithDifferentTypes('mask', controlValues, req, valueOfControl);
+          this.createInputWithDifferentTypes('text', controlValues, req, valueOfControl);
         }
       }
     }
@@ -199,8 +200,16 @@ export class StateControlService {
         }
       } else {
         if (element.id === 'mask') {
+          const myObj = {
+            mask: element._value
+          };
+          //let test = JSON.parse(myObj);
+          // test.replace('mask','')
+          // test.replace(':','')
+          // test.replace('"','')
+          // console.log(test);
           this.object[element.id] = [];
-          this.object[element.id].push('/' + element.id + '/');
+          this.object[element.id].push(new RegExp(element._value));
         } else {
           this.object[element.id] = element._value;
         }
@@ -208,7 +217,7 @@ export class StateControlService {
     });
 
     const form = this.createFormControlDynamiclly();
-    console.log(form);
+   // console.log(form);
     if (this.toBeEdit) {
       this.edit.next(form);
 
