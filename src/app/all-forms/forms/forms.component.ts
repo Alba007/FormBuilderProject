@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {NewFormComponent} from '../new-form/new-form.component';
 import {Router} from '@angular/router';
-import {JsonStructure} from '../models/JsonStructure';
-import {MatTableDataSource} from '@angular/material';
-import {LocalStorageService} from 'src/app/Formbuilder/services/local-storage.service';
+import { JsonStructure } from '../models/JsonStructure';
+import { MatTableDataSource } from '@angular/material';
+import { LocalStorageService } from 'src/app/Formbuilder/services/local-storage.service';
 import {StateControlService} from '../../Formbuilder/services/state-control.service';
 
 
@@ -41,17 +41,14 @@ export class FormsComponent implements OnInit {
   }
 
   deleteForm(name) {
-    console.log(name);
     LocalStorageService.deleteItem(name);
     this.dataSource.data = [];
     this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
-    console.log(this.dataSource);
     setTimeout(() => {
         console.log(this.dataSource, 'on deletee');
       }
       , 1000);
   }
-
 }
 
 

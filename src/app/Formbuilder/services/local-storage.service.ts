@@ -15,6 +15,7 @@ export class LocalStorageService {
 
 
     this.newform.subscribe(dat => {
+      console.log(dat);
       localStorage.setItem(dat.name, JSON.stringify(dat));
     });
     this.editForm.subscribe(edit => {
@@ -26,7 +27,7 @@ export class LocalStorageService {
   getAllFromLocalStorage(): JsonStructure[] {
     this.jsonStructure = [];
     for (let i = 0; i < localStorage.length; i++) {
-      this.jsonStructure[i] = JSON.parse(localStorage.getItem(localStorage.key(i))) ;
+      this.jsonStructure[i] = JSON.parse(localStorage.getItem(localStorage.key(i))) as JsonStructure;
     }
     console.log(localStorage);
     return this.jsonStructure;

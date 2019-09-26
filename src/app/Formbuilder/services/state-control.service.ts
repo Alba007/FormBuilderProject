@@ -158,7 +158,7 @@ export class StateControlService {
         }
       } else {
         if (controlValues === 'mask') {
-          this.createInputWithDifferentTypes('mask', controlValues, req, valueOfControl);
+          this.createInputWithDifferentTypes('text', controlValues, req, valueOfControl);
         }
       }
     }
@@ -197,8 +197,16 @@ export class StateControlService {
         }
       } else {
         if (element.id === 'mask') {
-          this.object[element.id] = undefined;
-          this.object[element.id] = element._value;
+          const myObj = {
+            mask: element._value
+          };
+          //let test = JSON.parse(myObj);
+          // test.replace('mask','')
+          // test.replace(':','')
+          // test.replace('"','')
+          // console.log(test);
+          this.object[element.id] = [];
+          this.object[element.id].push(new RegExp(element._value));
         } else {
           this.object[element.id] = element._value;
         }

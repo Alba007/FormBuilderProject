@@ -17,7 +17,6 @@ export class FormComponent implements AfterViewInit {
   formModel: DynamicFormModel = [];
   pocChange: number;
   formData: JsonStructure;
-  mask: any;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -33,25 +32,25 @@ export class FormComponent implements AfterViewInit {
     // } else {
     this.route.queryParams.subscribe(t => {
       this.formData = t;
-      console.log(this.formData)
+      console.log(this.formData);
       this.formModel = this.formService.fromJSON(t.form);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
     });
   }
 
-
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.formModel.subscribe(data => {
+      // data.mask = data.mask[0].split(',');
       this.formModel.push(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
     });
-
     this.stateControlService.edit.subscribe(edit => {
       this.formModel[this.pocChange] = edit;
       this.formGroup = this.formService.createFormGroup(this.formModel);
+
     });
   }
 
@@ -65,14 +64,9 @@ export class FormComponent implements AfterViewInit {
   }
 
   save(formModel) {
-    console.log(this.formData);
     if (this.formGroup.valid) {
-      const json = formModel;
-      console.log(this.formData.form, '------------');
-      this.formData.form = [];
-      formModel.forEach( x => {
-        this.formData.form.push(x);
-      });
+      const json: string = JSON.stringify(formModel);
+      this.formData.form = json;
       this.localStorageService.newform.next(this.formData);
       this.formModel = [];
       this.formGroup = this.formService.createFormGroup(this.formModel);
