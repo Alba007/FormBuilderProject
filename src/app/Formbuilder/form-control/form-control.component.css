@@ -1,23 +1,23 @@
 .items {
-  width: 30%;
-  height: 700px;
-  background-color: aliceblue;
-  display: inline-block;
+  height: -webkit-fill-available;
+  width: 33%;
 }
 
 .properties {
-  width: 30%;
-  height: 700px;
-  background-color: aliceblue;
-  display: inline-block;
-  position: relative;
-  float: right ;
+  margin: 0 auto;
+  height: -webkit-fill-available;
+  width: 33%;
 }
 .form {
-  width: 30%;
-  height: 700px;
-  background-color: aliceblue;
-  display: inline-block;
-  position: absolute;
-  left:536px;
+  height: -webkit-fill-available;
+  width: 33%;
+}
+.formBuilder {
+  height: -webkit-fill-available;
+  display: flex;
+}
+.itemsButton{
+  margin: 5px auto;
+  width: 97%!important;
+  list-style: none;
 }

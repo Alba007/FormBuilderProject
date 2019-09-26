@@ -1,7 +1,14 @@
+<mat-card>
+  <mat-card-title>
+    Form field properties
+  </mat-card-title>
 <form *ngIf="showForm" [formGroup]="formGroup" (ngSubmit)="save(formModel)">
   <dynamic-material-form-control *ngFor="let controlModel of formModel" [group]="formGroup" [model]="controlModel"
                                  (click)="controlDetails(controlModel)">
   </dynamic-material-form-control>
   <br/>
-  <button mat-button [disabled]="!formGroup.valid" type="Submit">Save</button>
+  <mat-card-actions>
+    <button mat-raised-button color="accent" [disabled]="!formGroup.valid" type="Submit">Save</button>
+  </mat-card-actions>
 </form>
+</mat-card>
