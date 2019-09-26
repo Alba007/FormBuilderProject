@@ -14,8 +14,8 @@ export class FormControlComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    console.log(history.state.data)
-    this.stateFormService.formData.next(history.state.data.json);
+    console.log(history.state.data);
+    // this.stateFormService.formData.next(history.state.data.json);
   }
   createFormControl(item) {
     const event = {

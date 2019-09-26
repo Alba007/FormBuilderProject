@@ -1,7 +1,7 @@
-<form *ngIf="showForm" [formGroup]="formGroup">
+<form *ngIf="showForm" [formGroup]="formGroup" (ngSubmit)="save(formModel)">
   <dynamic-material-form-control *ngFor="let controlModel of formModel" [group]="formGroup" [model]="controlModel"
                                  (click)="controlDetails(controlModel)">
   </dynamic-material-form-control>
   <br/>
-  <button mat-button [disabled]="!formGroup.valid" type="Submit" (click)="save(formModel)">Save</button>
+  <button mat-button [disabled]="!formGroup.valid" type="Submit">Save</button>
 </form>
