@@ -1,18 +1,12 @@
-<div class="formBuilder">
-    <mat-card class="items">
-      <mat-card-title>
-        Form field types
-      </mat-card-title>
+    <mat-card class="items" style="height: 500px">
+      <mat-card-header>
+        <mat-card-title>
+          Form field types
+        </mat-card-title>
+      </mat-card-header>
     <mat-list>
       <mat-list-item class="itemsButton" *ngFor="let item of items">
         <button style="width: 100%" mat-stroked-button (click)="createFormControl(item)">{{item}}</button>
       </mat-list-item>
     </mat-list>
     </mat-card>
-  <div class="properties">
-    <app-properties></app-properties>
-  </div>
-  <div class="form">
-    <app-form></app-form>
-  </div>
-</div>
