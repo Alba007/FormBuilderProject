@@ -24,7 +24,7 @@ export class NewFormComponent implements OnInit {
   }
 
   ngOnInit() {
-   this.createForm()
+   this.createForm();
   }
 
   createForm() {
@@ -39,10 +39,10 @@ export class NewFormComponent implements OnInit {
     this.dialogRef.close();
     this.myForm.name = this.formGroup.getRawValue().name;
     this.myForm.description = this.formGroup.getRawValue().description;
-    this.myForm.form = [];
+    this.myForm.form = [] ;
     const json = this.myForm;
-    history.pushState({data: {json}}, '', '');
-    this.router.navigate(['createForm'], {state: {data: {json}}});
+    this.router.navigate(['createForm'], {queryParams: json});
+
   }
 
 

@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 import { JsonStructure } from '../models/JsonStructure';
 import { MatTableDataSource } from '@angular/material';
 import { LocalStorageService } from 'src/app/Formbuilder/services/local-storage.service';
+import {StateControlService} from '../../Formbuilder/services/state-control.service';
 
 
 @Component({
@@ -16,11 +17,10 @@ export class FormsComponent implements OnInit {
   public dataSource = new MatTableDataSource<JsonStructure>();
   displayedColumns = ['name','description', 'update', 'delete']
 
-  constructor(private dialog: MatDialog, public router: Router,private localStorageService:LocalStorageService) {
-   this.dataSource.data=this.localStorageService.getAllFromLocalStorage() ;
- // console.log(this.dataSource.data[0].name)
+  constructor(private stateFormService: StateControlService, private dialog: MatDialog, public router: Router, private localStorageService: LocalStorageService) {
+    this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
   }
-  
+
 
   ngOnInit() {
   }
@@ -35,21 +35,19 @@ export class FormsComponent implements OnInit {
     });
   }
 
-  updateForm(form){
+  updateForm(form) {
     console.log(form)
-    //routing 
+    this.router.navigate(['createForm'], {queryParams: form});
   }
 
-  deleteForm(name){
-console.log(name)
-this.localStorageService.deleteItem(name);
-this.dataSource.data=[];
-debugger ;
-this.dataSource.data=this.localStorageService.getAllFromLocalStorage() ;
-
-console.log(this.dataSource)
-setTimeout(()=>{console.log(this.dataSource,"on deletee")}
-,1000)
+  deleteForm(name) {
+    LocalStorageService.deleteItem(name);
+    this.dataSource.data = [];
+    this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
+    setTimeout(() => {
+        console.log(this.dataSource, 'on deletee');
+      }
+      , 1000);
   }
 
 }

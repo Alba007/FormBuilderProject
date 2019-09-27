@@ -1,9 +1,11 @@
+<mat-card>
 <form *ngIf="showForm" [formGroup]="formGroup">
   <dynamic-material-form  [group]="formGroup" [model]="formModel">
     <ng-template modelId="options" let-group let-index="index-1" let-context="context">
-      <button type="button" (click)="removeItem(context, index)">-</button>
-      <button type="button" (click)="insertItem(group.context, group.index + 1)">+</button>
+      <button mat-button type="button" (click)="removeItem(context, index)">-</button>
+      <button mat-button mat-icon-button (click)="insertItem(group.context, group.index + 1)">+</button>
     </ng-template>
   </dynamic-material-form ><br/>
   <button mat-button type="submit" (click)="save(formModel)">Save</button>
 </form>
+</mat-card>

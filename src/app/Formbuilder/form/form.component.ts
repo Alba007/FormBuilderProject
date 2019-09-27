@@ -2,7 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
 import {DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {JsonStructure} from '../../all-forms/models/JsonStructure';
 import {LocalStorageService} from '../services/local-storage.service';
 
@@ -18,23 +18,31 @@ export class FormComponent implements AfterViewInit {
   pocChange: number;
   formData: JsonStructure;
 
-  constructor(private formService: DynamicFormService,
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private formService: DynamicFormService,
               private stateControlService: StateControlService,
               private cd: ChangeDetectorRef,
-              private router: Router,
               private localStorageService: LocalStorageService) {
-    this.stateControlService.formData.subscribe(t => {
-      this.formData = t
+    // if (history.state.title === 'update') {
+    //   const data = history.state.data.data;
+    //   this.formModel = this.formService.fromJSON(data.form);
+    //   this.formGroup = this.formService.createFormGroup(this.formModel);
+    //   this.showForm = true;
+    // } else {
+    this.route.queryParams.subscribe(t => {
+      this.formData = t;
+      console.log(this.formData);
       this.formModel = this.formService.fromJSON(t.form);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
-
     });
   }
 
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.formModel.subscribe(data => {
+      // data.mask = data.mask[0].split(',');
       this.formModel.push(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
