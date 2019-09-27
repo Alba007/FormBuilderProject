@@ -5,6 +5,10 @@
       <mat-header-cell *matHeaderCellDef> name</mat-header-cell>
       <mat-cell *matCellDef="let form"> {{form.name}} </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> description</mat-header-cell>
+      <mat-cell *matCellDef="let form"> {{form.description}} </mat-cell>
+    </ng-container>
     
     <ng-container matColumnDef="update">
       <th mat-header-cell *matHeaderCellDef> Update </th>
