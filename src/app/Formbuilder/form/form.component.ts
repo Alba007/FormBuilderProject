@@ -24,25 +24,22 @@ export class FormComponent implements AfterViewInit {
               private stateControlService: StateControlService,
               private cd: ChangeDetectorRef,
               private localStorageService: LocalStorageService) {
-    // if (history.state.title === 'update') {
-    //   const data = history.state.data.data;
-    //   this.formModel = this.formService.fromJSON(data.form);
-    //   this.formGroup = this.formService.createFormGroup(this.formModel);
-    //   this.showForm = true;
-    // } else {
-    this.route.queryParams.subscribe(t => {
-      this.formData = t;
-      console.log(this.formData);
-      this.formModel = this.formService.fromJSON(t.form);
+    this.route.queryParams.subscribe(existData => {
+      this.formData = existData;
+      if (existData.form !== '') {
+        this.formModel = this.formService.fromJSON(existData.form);
+        this.showForm = true;
+      } else {
+        this.formModel = [];
+      }
       this.formGroup = this.formService.createFormGroup(this.formModel);
-      this.showForm = true;
+
     });
   }
 
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.formModel.subscribe(data => {
-      // data.mask = data.mask[0].split(',');
       this.formModel.push(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
@@ -55,6 +52,7 @@ export class FormComponent implements AfterViewInit {
   }
 
   controlDetails(controlModel) {
+    console.log(controlModel)
     const event = {
       type: 'addFormControl',
       payload: controlModel
@@ -65,13 +63,21 @@ export class FormComponent implements AfterViewInit {
 
   save(formModel) {
     if (this.formGroup.valid) {
-      const json: string = JSON.stringify(formModel);
-      this.formData.form = json;
-      this.localStorageService.newform.next(this.formData);
+      this.localStorageService.newform.next({
+        name: this.formData.name,
+        description: this.formData.description,
+        form: JSON.stringify(formModel)
+      });
       this.formModel = [];
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.router.navigate(['allForms']);
     }
     return;
+  }
+
+  delete(controlModel) {
+    const posToDelete = this.formModel.indexOf(controlModel);
+    this.formModel.splice(posToDelete);
+    console.log(controlModel);
   }
 }

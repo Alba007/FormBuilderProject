@@ -37,15 +37,19 @@ export class StateControlService {
       maxLength: 'number',
       minLength: 'number',
       placeholder: 'text',
+
+      mask: [],
       required: 'Boolean',
-      mask: []
+
     });
     this.map.set('EMAIL', {
       id: 'text',
       label: 'text',
       maxLength: 'number',
       placeholder: 'text',
-      mask: []
+
+      mask: [],
+      required: 'Boolean',
 
     });
     this.map.set('PASSWORD', {
@@ -54,8 +58,9 @@ export class StateControlService {
       maxLength: 'number',
       minLength: 'number',
       placeholder: 'text',
+
+      mask: [],
       required: 'Boolean',
-      mask: []
 
     });
     this.map.set('CHECKBOX', {
@@ -97,8 +102,7 @@ export class StateControlService {
       id: 'text',
       label: 'text',
       minLength: 'number',
-      required: 'Boolean',
-      mask: []
+      required: 'Boolean'
 
     });
 
@@ -147,7 +151,8 @@ export class StateControlService {
         this.createInputWithDifferentTypes(pair[controlValues], controlValues, req, valueOfControl);
       } else {
         if (pair[controlValues] === 'Boolean') {
-          this.createCheckbox(controlValues);
+          console.log(controlValues, 'boleani');
+          this.createCheckbox(controlValues, valueOfControl);
         }
       }
       if (controlValues === 'options') {
@@ -200,13 +205,16 @@ export class StateControlService {
           const myObj = {
             mask: element._value
           };
-          //let test = JSON.parse(myObj);
-          // test.replace('mask','')
-          // test.replace(':','')
-          // test.replace('"','')
-          // console.log(test);
-          this.object[element.id] = [];
-          this.object[element.id].push(new RegExp(element._value));
+          if (element._value) {
+            if (element._value[0] == '/null/') {
+              this.object[element.id] = null;
+            } else {
+              this.object[element.id] = [];
+              this.object[element.id].push(new RegExp(element._value));
+            }
+
+          }
+
         } else {
           this.object[element.id] = element._value;
         }
@@ -262,10 +270,11 @@ export class StateControlService {
     }));
   }
 
-  createCheckbox(controlValues) {
+  createCheckbox(controlValues, value) {
     this.formControl.push(new DynamicCheckboxModel({
       id: controlValues,
-      label: controlValues
+      label: controlValues,
+      value
     }));
   }
 

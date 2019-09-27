@@ -1,7 +1,9 @@
 <form *ngIf="showForm" [formGroup]="formGroup" (ngSubmit)="save(formModel)">
-  <dynamic-material-form-control *ngFor="let controlModel of formModel" [group]="formGroup" [model]="controlModel"
+  <dynamic-material-form-control *ngFor="let controlModel of formModel"
+                                 [group]="formGroup" [model]="controlModel"
                                  (click)="controlDetails(controlModel)">
+    <button mat-button type="button" (click)="delete(controlModel)">Delete</button>
   </dynamic-material-form-control>
   <br/>
-  <button mat-button [disabled]="!formGroup.valid" type="Submit">Save</button>
+  <button mat-button *ngIf="formModel.length !==0 " [disabled]="!formGroup.valid" type="Submit">Save</button>
 </form>

@@ -15,7 +15,6 @@ export class LocalStorageService {
 
 
     this.newform.subscribe(dat => {
-      console.log(dat);
       localStorage.setItem(dat.name, JSON.stringify(dat));
     });
     this.editForm.subscribe(edit => {
