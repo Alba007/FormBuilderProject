@@ -15,7 +15,7 @@ import {StateControlService} from '../../Formbuilder/services/state-control.serv
 })
 export class FormsComponent implements OnInit {
   public dataSource = new MatTableDataSource<JsonStructure>();
-  displayedColumns = ['name', 'update', 'delete'];
+  displayedColumns = ['name','description', 'update', 'delete']
 
   constructor(private stateFormService: StateControlService, private dialog: MatDialog, public router: Router, private localStorageService: LocalStorageService) {
     this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
@@ -49,6 +49,7 @@ export class FormsComponent implements OnInit {
       }
       , 1000);
   }
+
 }
 
 
