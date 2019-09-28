@@ -11,7 +11,6 @@ import {JsonStructure} from '../models/JsonStructure';
 })
 export class NewFormComponent implements OnInit {
   formGroup: FormGroup;
-  updateMessage = true;
   allForms = [];
   private json = {name: 'ok'};
   myForm: JsonStructure = {};

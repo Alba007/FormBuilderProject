@@ -2,6 +2,7 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core
 import {DynamicFormArrayModel, DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormArray, FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-properties',
@@ -17,14 +18,20 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   formArrayModel;
 
   constructor(private formService: DynamicFormService,
+              private router: Router,
               private stateControlService: StateControlService,
-              private cd: ChangeDetectorRef) {}
-ngOnInit() {
-  this.stateControlService.dataModel.subscribe(data => {
-    this.formGroup = this.formService.createFormGroup(data);
-  });
+              private cd: ChangeDetectorRef) {
+  }
 
-}
+  ngOnInit() {
+    this.stateControlService.dataModel.subscribe(data => {
+      this.formGroup = this.formService.createFormGroup(data);
+    });
+    this.stateControlService.updateContent.subscribe(res => {
+      this.formModel = [];
+    });
+  }
+
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {
@@ -34,7 +41,6 @@ ngOnInit() {
       this.formArrayModel = this.formService.findById('options', this.formModel);
       this.hasOptions = this.formArrayControl != null;
     });
-    //  return this.formGroup.valid;
   }
 
   removeItem(context: DynamicFormArrayModel, index: number) {
@@ -54,6 +60,6 @@ ngOnInit() {
       this.stateControlService.eventDispatcher.next(event);
       this.formModel = [];
     }
-    return;
   }
+
 }

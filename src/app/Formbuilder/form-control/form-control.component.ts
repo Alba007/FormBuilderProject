@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {StateControlService} from '../services/state-control.service';
-import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-form-control',
@@ -8,15 +7,14 @@ import {Router} from '@angular/router';
   styleUrls: ['./form-control.component.css']
 })
 export class FormControlComponent implements OnInit {
-  items = ['INPUT', 'EMAIL', 'PASSWORD', 'CHECKBOX', 'RADIO_GROUP', 'CHECKBOX_GROUP', 'SLIDER', 'TEXTAREA', 'SELECT'];
+  items = ['INPUT', 'EMAIL', 'PASSWORD', 'CHECKBOX', 'RADIO_GROUP', 'SLIDER', 'TEXTAREA', 'SELECT'];
 
-  constructor(private stateFormService: StateControlService,
-              private router: Router) { }
+  constructor(private stateFormService: StateControlService) {
+  }
 
   ngOnInit() {
-    console.log(history.state.data);
-    // this.stateFormService.formData.next(history.state.data.json);
   }
+
   createFormControl(item) {
     const event = {
       type: 'addFormControl',

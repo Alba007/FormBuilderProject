@@ -5,6 +5,8 @@ import {StateControlService} from '../services/state-control.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {JsonStructure} from '../../all-forms/models/JsonStructure';
 import {LocalStorageService} from '../services/local-storage.service';
+import {MatDialog} from '@angular/material';
+import {ConfirmationMessageComponent} from '../confirmation-message/confirmation-message.component';
 
 @Component({
   selector: 'app-form',
@@ -23,14 +25,14 @@ export class FormComponent implements AfterViewInit {
               private formService: DynamicFormService,
               private stateControlService: StateControlService,
               private cd: ChangeDetectorRef,
-              private localStorageService: LocalStorageService) {
+              private localStorageService: LocalStorageService,
+              private dialog: MatDialog) {
     this.route.queryParams.subscribe(existData => {
       this.formData = existData;
+      this.formModel = [];
       if (existData.form !== '') {
         this.formModel = this.formService.fromJSON(existData.form);
         this.showForm = true;
-      } else {
-        this.formModel = [];
       }
       this.formGroup = this.formService.createFormGroup(this.formModel);
 
@@ -52,7 +54,7 @@ export class FormComponent implements AfterViewInit {
   }
 
   controlDetails(controlModel) {
-    console.log(controlModel)
+    console.log(controlModel);
     const event = {
       type: 'addFormControl',
       payload: controlModel
@@ -62,22 +64,32 @@ export class FormComponent implements AfterViewInit {
   }
 
   save(formModel) {
-    if (this.formGroup.valid) {
-      this.localStorageService.newform.next({
-        name: this.formData.name,
-        description: this.formData.description,
-        form: JSON.stringify(formModel)
-      });
-      this.formModel = [];
-      this.formGroup = this.formService.createFormGroup(this.formModel);
-      this.router.navigate(['allForms']);
-    }
-    return;
+    this.localStorageService.newform.next({
+      name: this.formData.name,
+      description: this.formData.description,
+      form: JSON.stringify(formModel)
+    });
+    this.formModel = [];
+    this.router.navigate(['allForms']);
   }
 
   delete(controlModel) {
-    const posToDelete = this.formModel.indexOf(controlModel);
-    this.formModel.splice(posToDelete);
-    console.log(controlModel);
+    this.dialog.open(ConfirmationMessageComponent, {
+      width: '350px',
+      disableClose: true,
+      data: {
+        message: 'Are you sure you want to delete?'
+      }
+    }).afterClosed().subscribe(res => {
+        if (res) {
+          const posToDelete = this.formModel.indexOf(controlModel);
+          this.formModel.splice(posToDelete);
+          // delete content in properties component after delete
+          if (this.pocChange === posToDelete) {
+            this.stateControlService.updateContent.next(true);
+          }
+        }
+      }
+    );
   }
 }

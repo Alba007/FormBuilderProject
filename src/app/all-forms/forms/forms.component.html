@@ -1,9 +1,13 @@
-<button (click)="openNewFormModal()"> New Form</button>
-
+<mat-card style="height: 500px">
+  <mat-card-content style="overflow-y: scroll; max-height: 80%">
 <mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef> name</mat-header-cell>
       <mat-cell *matCellDef="let form"> {{form.name}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef> description</mat-header-cell>
+      <mat-cell *matCellDef="let form"> {{form.description}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="update">
@@ -26,3 +30,11 @@
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions style="margin-right: 50px;float: right;">
+      <button mat-mini-fab color="warn" (click)="openNewFormModal()">+</button>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>
+

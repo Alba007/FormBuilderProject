@@ -13,7 +13,6 @@ import {
   DynamicTextAreaModel
 } from '@ng-dynamic-forms/core';
 import {Event} from '../event';
-import {JsonStructure} from '../../all-forms/models/JsonStructure';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +27,7 @@ export class StateControlService {
   map = new Map();
   formControl: DynamicFormModel;
   toBeEdit = false;
-  formData = new Subject<JsonStructure>();
+  updateContent = new Subject<boolean>();
 
   constructor() {
     this.map.set('INPUT', {
@@ -58,7 +57,6 @@ export class StateControlService {
       maxLength: 'number',
       minLength: 'number',
       placeholder: 'text',
-
       mask: [],
       required: 'Boolean',
 
@@ -222,7 +220,6 @@ export class StateControlService {
     });
 
     const form = this.createFormControlDynamiclly();
-    console.log(form);
     if (this.toBeEdit) {
       this.edit.next(form);
 
