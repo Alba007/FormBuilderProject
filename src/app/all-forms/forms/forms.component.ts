@@ -13,7 +13,7 @@ import {StateControlService} from '../../Formbuilder/services/state-control.serv
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.css']
 })
-export class FormsComponent implements OnInit {
+export class FormsComponent implements OnInit {ng
   public dataSource = new MatTableDataSource<JsonStructure>();
   displayedColumns = ['name','description', 'update', 'delete']
 
