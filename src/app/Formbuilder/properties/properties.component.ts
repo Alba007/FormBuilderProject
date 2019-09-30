@@ -36,9 +36,9 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
     this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {
       this.formModel = data;
-      this.showForm = true;
       this.formArrayControl = this.formGroup.get('options') as FormArray;
       this.formArrayModel = this.formService.findById('options', this.formModel);
+      this.showForm = true;
       this.hasOptions = this.formArrayControl != null;
     });
   }
