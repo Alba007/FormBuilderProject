@@ -6,6 +6,7 @@ import {JsonStructure} from '../models/JsonStructure';
 import {MatTableDataSource} from '@angular/material';
 import {LocalStorageService} from 'src/app/Formbuilder/services/local-storage.service';
 import {StateControlService} from '../../Formbuilder/services/state-control.service';
+import {ConfirmationMessageComponent} from '../../Formbuilder/confirmation-message/confirmation-message.component';
 
 
 @Component({
@@ -41,10 +42,23 @@ export class FormsComponent implements OnInit {ng
     this.router.navigate(['createForm'], {queryParams: form});
   }
 
+
   deleteForm(name) {
-    LocalStorageService.deleteItem(name);
-    this.dataSource.data = [];
-    this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
+    this.dialog.open(ConfirmationMessageComponent, {
+      width : '390px',
+      panelClass: 'confirm-dialog-container',
+      data: {
+        message: 'Do you want do delete '
+      }
+
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        LocalStorageService.deleteItem(name);
+        this.dataSource.data = [];
+        this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
+      }
+
+    });
 
   }
 
