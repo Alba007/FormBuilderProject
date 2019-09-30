@@ -11,7 +11,6 @@ import {JsonStructure} from '../models/JsonStructure';
 })
 export class NewFormComponent implements OnInit {
   formGroup: FormGroup;
-  updateMessage = true;
   allForms = [];
   private json = {name: 'ok'};
   myForm: JsonStructure = {};
@@ -39,7 +38,7 @@ export class NewFormComponent implements OnInit {
     this.dialogRef.close();
     this.myForm.name = this.formGroup.getRawValue().name;
     this.myForm.description = this.formGroup.getRawValue().description;
-    this.myForm.form = [] ;
+    this.myForm.form = '' ;
     const json = this.myForm;
     this.router.navigate(['createForm'], {queryParams: json});
 

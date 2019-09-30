@@ -1,0 +1,6 @@
+<div>
+  <mat-icon (click)="closeDialog()" class="close">X</mat-icon>
+  <span>{{data.message}}</span><br/><br/>
+  <button mat-float-button id="no-button" [mat-dialog-close]="false" class="add">No</button>
+  <button mat-float-button id="yes-button" [mat-dialog-close]="true" class="delete">Yes</button>
+</div>
