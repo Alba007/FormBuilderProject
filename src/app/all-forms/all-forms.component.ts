@@ -7,10 +7,9 @@ import {Router} from '@angular/router';
 })
 export class AllFormsComponent implements OnInit {
 
-  constructor(public router: Router) {
+  constructor() {
   }
 
   ngOnInit() {
-    // router.navigate(['homepage']);
   }
 }

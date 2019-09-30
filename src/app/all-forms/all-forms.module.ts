@@ -9,7 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatRippleModule} from '@angular/material/core';
 import {AllFormsComponent} from './all-forms.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatTableModule, MatIcon, MatIconModule } from '@angular/material'  
+import {MatTableModule, MatIcon, MatIconModule, MatCardModule, MatTooltipModule} from '@angular/material';
 @NgModule({
   declarations: [FormsComponent, NewFormComponent],
   imports: [
@@ -18,14 +18,16 @@ import { MatTableModule, MatIcon, MatIconModule } from '@angular/material'
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRippleModule, 
+    MatRippleModule,
     FormsModule,
-   BrowserAnimationsModule,
+    BrowserAnimationsModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatTableModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule,
+    MatTooltipModule
   ],
   exports: [FormsComponent],
   bootstrap: [AllFormsComponent],

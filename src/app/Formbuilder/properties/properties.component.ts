@@ -20,20 +20,25 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   constructor(private formService: DynamicFormService,
               private router: Router,
               private stateControlService: StateControlService,
-              private cd: ChangeDetectorRef) {}
-ngOnInit() {
-  this.stateControlService.dataModel.subscribe(data => {
-    this.formGroup = this.formService.createFormGroup(data);
-  });
+              private cd: ChangeDetectorRef) {
+  }
 
-}
+  ngOnInit() {
+    this.stateControlService.dataModel.subscribe(data => {
+      this.formGroup = this.formService.createFormGroup(data);
+    });
+    this.stateControlService.updateContent.subscribe(res => {
+      this.formModel = [];
+    });
+  }
+
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {
       this.formModel = data;
-      this.showForm = true;
       this.formArrayControl = this.formGroup.get('options') as FormArray;
       this.formArrayModel = this.formService.findById('options', this.formModel);
+      this.showForm = true;
       this.hasOptions = this.formArrayControl != null;
     });
   }
@@ -55,6 +60,6 @@ ngOnInit() {
       this.stateControlService.eventDispatcher.next(event);
       this.formModel = [];
     }
-    return;
   }
+
 }
