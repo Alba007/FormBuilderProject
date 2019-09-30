@@ -24,12 +24,7 @@ export class FormComponent implements AfterViewInit {
               private stateControlService: StateControlService,
               private cd: ChangeDetectorRef,
               private localStorageService: LocalStorageService) {
-    // if (history.state.title === 'update') {
-    //   const data = history.state.data.data;
-    //   this.formModel = this.formService.fromJSON(data.form);
-    //   this.formGroup = this.formService.createFormGroup(this.formModel);
-    //   this.showForm = true;
-    // } else {
+
     this.route.queryParams.subscribe(t => {
       this.formData = t;
       console.log(this.formData);
@@ -40,9 +35,7 @@ export class FormComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.cd.detectChanges();
     this.stateControlService.formModel.subscribe(data => {
-      // data.mask = data.mask[0].split(',');
       this.formModel.push(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;

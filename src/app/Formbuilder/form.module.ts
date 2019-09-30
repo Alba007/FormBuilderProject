@@ -8,7 +8,7 @@ import { FormComponent } from './form/form.component';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { FormControlComponent } from './form-control/form-control.component';
-import {MatCardModule} from '@angular/material';
+import {MatCardModule, MatTooltipModule} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import {MatCardModule} from '@angular/material';
     BrowserAnimationsModule,
     MatListModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltipModule
   ],
   providers: [],
   exports: [
