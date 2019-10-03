@@ -7,7 +7,7 @@ import {StateControlService} from '../services/state-control.service';
   styleUrls: ['./form-control.component.css']
 })
 export class FormControlComponent implements OnInit {
-  items = ['INPUT', 'EMAIL', 'PASSWORD', 'CHECKBOX', 'RADIO_GROUP', 'SLIDER', 'TEXTAREA', 'SELECT'];
+  items = ['INPUT', 'EMAIL', 'FILE', 'PASSWORD', 'CHECKBOX', 'RADIO_GROUP', 'SLIDER', 'TEXTAREA', 'SELECT'];
 
   constructor(private stateFormService: StateControlService) {
   }

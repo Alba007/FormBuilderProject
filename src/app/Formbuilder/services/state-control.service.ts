@@ -51,6 +51,12 @@ export class StateControlService {
       required: 'Boolean',
 
     });
+    this.map.set('FILE', {
+      id: 'text',
+      label: 'text',
+      required: 'Boolean',
+
+    });
     this.map.set('PASSWORD', {
       id: 'text',
       label: 'text',
@@ -220,6 +226,7 @@ export class StateControlService {
     });
 
     const form = this.createFormControlDynamiclly();
+    console.log(form)
     if (this.toBeEdit) {
       this.edit.next(form);
 
@@ -288,6 +295,7 @@ export class StateControlService {
   createFormControlDynamiclly() {
     let form;
     let attr;
+    attr = 'inputType';
     switch (this.control) {
       case 'INPUT':
         form = new DynamicInputModel(
@@ -295,8 +303,14 @@ export class StateControlService {
         );
         return form;
       case 'EMAIL':
-        attr = 'inputType';
         this.object[attr] = 'email';
+        form = new DynamicInputModel(
+          this.object
+        );
+        return form;
+      case 'FILE':
+        this.object[attr] = 'file';
+        console.log('file')
         form = new DynamicInputModel(
           this.object
         );
@@ -307,7 +321,6 @@ export class StateControlService {
         );
         return form;
       case 'PASSWORD':
-        attr = 'inputType';
         this.object[attr] = 'password';
         form = new DynamicInputModel(
           this.object
