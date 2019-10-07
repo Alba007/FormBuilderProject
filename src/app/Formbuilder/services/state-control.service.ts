@@ -204,11 +204,12 @@ export class StateControlService {
       } else {
         if (element.id === 'mask') {
           if (element._value) {
-            const test = element._value + ''
-            const stripped = test.replace(/[/]/g, '');
-            console.log(stripped)
             this.object[element.id] = [];
-            this.object[element.id].push(new RegExp(stripped));
+            this.object[element.id].push(new RegExp(element._value));
+            let val = this.object[element.id][0] + '';
+            val = val.substring(1, val.length - 1);
+            this.object[element.id][0] = val;
+            console.log(this.object[element.id][0], 'test@123');
           }
         } else {
           this.object[element.id] = element._value;
