@@ -6,7 +6,8 @@
       </mat-card-header>
     <mat-list>
       <mat-list-item class="itemsButton" *ngFor="let item of items">
-        <button style="width: 100%" mat-stroked-button (click)="createFormControl(item)">{{item}}</button>
+        <button style="width: 100%" mat-stroked-button  [matTooltip]="tooltip" (mouseenter) ="tooltipMessage(item)"
+                (click)="createFormControl(item)">{{item}}</button>
       </mat-list-item>
     </mat-list>
     </mat-card>

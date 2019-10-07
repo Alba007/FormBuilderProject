@@ -14,13 +14,14 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
   showForm = false;
-  formArrayControl;
+  formArrayControl: FormArray;
   formArrayModel;
 
   constructor(private formService: DynamicFormService,
               private router: Router,
               private stateControlService: StateControlService,
               private cd: ChangeDetectorRef) {
+    this.formModel = [];
   }
 
   ngOnInit() {
@@ -48,10 +49,12 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   }
 
   insertItem(context: DynamicFormArrayModel, index: number) {
+    console.log(context, 'konteksti')
     this.formService.insertFormArrayGroup(index, this.formArrayControl, context);
   }
 
   save(newModel) {
+    console.log(newModel)
     if (this.formGroup.valid) {
       const event = {
         type: 'addProperties',

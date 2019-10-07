@@ -9,7 +9,8 @@ import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {InputsComponent} from './Inputs/inputs.component';
 import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
-
+import {ConfirmationMessageComponent} from './confirmation-message/confirmation-message.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     PropertiesComponent,
@@ -28,7 +29,9 @@ import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
+
   ],
   providers: [],
   exports: [
