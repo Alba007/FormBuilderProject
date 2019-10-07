@@ -6,7 +6,6 @@ import {JsonStructure} from '../models/JsonStructure';
 import {MatTableDataSource} from '@angular/material';
 import {LocalStorageService} from 'src/app/Formbuilder/services/local-storage.service';
 import {StateControlService} from '../../Formbuilder/services/state-control.service';
-import {ConfirmationMessageComponent} from '../../Formbuilder/confirmation-message/confirmation-message.component';
 
 
 @Component({
@@ -14,9 +13,9 @@ import {ConfirmationMessageComponent} from '../../Formbuilder/confirmation-messa
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.css']
 })
-export class FormsComponent implements OnInit {ng
+export class FormsComponent implements OnInit {
   public dataSource = new MatTableDataSource<JsonStructure>();
-  displayedColumns = ['name', 'description', 'update', 'delete'];
+  displayedColumns = ['name', 'description', 'preview', 'update'];
 
   constructor(private stateFormService: StateControlService,
               private dialog: MatDialog,
@@ -42,26 +41,10 @@ export class FormsComponent implements OnInit {ng
     this.router.navigate(['createForm'], {queryParams: form});
   }
 
-
-  deleteForm(name) {
-    this.dialog.open(ConfirmationMessageComponent, {
-      width : '390px',
-      panelClass: 'confirm-dialog-container',
-      data: {
-        message: 'Do you want do delete '
-      }
-
-    }).afterClosed().subscribe(res => {
-      if (res) {
-        LocalStorageService.deleteItem(name);
-        this.dataSource.data = [];
-        this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
-      }
-
-    });
+  preview(form) {
+    this.router.navigate(['display'], {queryParams: form});
 
   }
-
 }
 
 

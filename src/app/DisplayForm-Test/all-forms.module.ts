@@ -7,9 +7,11 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatRippleModule} from '@angular/material/core';
-import {AllFormsComponent} from './all-forms.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule, MatIcon, MatIconModule, MatCardModule, MatTooltipModule} from '@angular/material';
+import {MatTableModule, MatIconModule, MatCardModule, MatTooltipModule} from '@angular/material';
+import {DisplayFormModule} from '../display-form/display-form.module';
+import {AllFormsRoutingModule} from './all-forms-routing.module';
+
 @NgModule({
   declarations: [FormsComponent, NewFormComponent],
   imports: [
@@ -19,7 +21,6 @@ import {MatTableModule, MatIcon, MatIconModule, MatCardModule, MatTooltipModule}
     MatFormFieldModule,
     MatInputModule,
     MatRippleModule,
-    FormsModule,
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,
@@ -27,11 +28,13 @@ import {MatTableModule, MatIcon, MatIconModule, MatCardModule, MatTooltipModule}
     MatTableModule,
     MatIconModule,
     MatCardModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DisplayFormModule,
+    AllFormsRoutingModule,
   ],
   exports: [FormsComponent],
-  bootstrap: [AllFormsComponent],
+  bootstrap: [FormsComponent],
   entryComponents: [NewFormComponent]
-
 })
+
 export class AllFormsModule { }

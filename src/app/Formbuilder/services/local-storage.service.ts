@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {JsonStructure} from '../../all-forms/models/JsonStructure';
+import {JsonStructure} from '../../DisplayForm-Test/models/JsonStructure';
 
 
 @Injectable({

@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {StateControlService} from '../services/state-control.service';
 
 @Component({
-  selector: 'app-form-control',
-  templateUrl: './form-control.component.html',
-  styleUrls: ['./form-control.component.css']
+  selector: 'app-inputs',
+  templateUrl: './inputs.component.html',
+  styleUrls: ['./inputs.component.css']
 })
-export class FormControlComponent implements OnInit {
+export class InputsComponent implements OnInit {
   items = ['INPUT', 'EMAIL', 'PASSWORD', 'CHECKBOX', 'RADIO_GROUP', 'SLIDER', 'TEXTAREA', 'SELECT'];
 
   constructor(private stateFormService: StateControlService) {
