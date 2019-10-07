@@ -36,7 +36,6 @@ export class StateControlService {
       maxLength: 'number',
       minLength: 'number',
       placeholder: 'text',
-
       mask: [],
       required: 'Boolean',
 
@@ -46,7 +45,6 @@ export class StateControlService {
       label: 'text',
       maxLength: 'number',
       placeholder: 'text',
-
       mask: [],
       required: 'Boolean',
 
@@ -155,7 +153,6 @@ export class StateControlService {
         this.createInputWithDifferentTypes(pair[controlValues], controlValues, req, valueOfControl);
       } else {
         if (pair[controlValues] === 'Boolean') {
-          console.log(controlValues, 'boleani');
           this.createCheckbox(controlValues, valueOfControl);
         }
       }
@@ -189,10 +186,10 @@ export class StateControlService {
           attr = 'group';
           this.object[attr] = [];
           element.groups.forEach(arrayElement => {
+            const val = arrayElement.group[0]._value + '';
             const optObject = {
-              id: arrayElement.group[0]._value,
-              label: arrayElement.group[0]._value,
-              value: arrayElement.group[0]._value
+              id: val,
+              label: val
             };
             if (this.control === 'CHECKBOX_GROUP') {
               this.object[attr].push(new DynamicCheckboxModel(
@@ -206,19 +203,13 @@ export class StateControlService {
         }
       } else {
         if (element.id === 'mask') {
-          const myObj = {
-            mask: element._value
-          };
           if (element._value) {
-            if (element._value[0] == '/null/') {
-              this.object[element.id] = null;
-            } else {
-              this.object[element.id] = [];
-              this.object[element.id].push(new RegExp(element._value));
-            }
-
+            const test = element._value + ''
+            const stripped = test.replace(/[/]/g, '');
+            console.log(stripped)
+            this.object[element.id] = [];
+            this.object[element.id].push(new RegExp(stripped));
           }
-
         } else {
           this.object[element.id] = element._value;
         }
@@ -226,7 +217,7 @@ export class StateControlService {
     });
 
     const form = this.createFormControlDynamiclly();
-    console.log(form)
+    console.log(form);
     if (this.toBeEdit) {
       this.edit.next(form);
 
@@ -254,7 +245,7 @@ export class StateControlService {
           new DynamicInputModel({
             id: 'myInput',
             label: (i < length && i >= 0) ? data.payload[attr][i].label : '',
-            value: (i < length && i >= 0) ? data.payload[attr][i++].label : i++
+            value: (i < length && i >= 0) ? data.payload[attr][i++].label + '' : i++
           })];
       }
     }));
@@ -310,7 +301,7 @@ export class StateControlService {
         return form;
       case 'FILE':
         this.object[attr] = 'file';
-        console.log('file')
+        console.log('file');
         form = new DynamicInputModel(
           this.object
         );

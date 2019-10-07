@@ -10,8 +10,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {FormControlComponent} from './form-control/form-control.component';
 import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
 import {ConfirmationMessageComponent} from './confirmation-message/confirmation-message.component';
-import { MatFileUploadModule } from 'angular-material-fileupload';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     PropertiesComponent,
@@ -32,7 +31,8 @@ import { MatFileUploadModule } from 'angular-material-fileupload';
     MatCardModule,
     MatIconModule,
     MatDialogModule,
-    MatFileUploadModule
+    MatTooltipModule
+
   ],
   providers: [],
   exports: [
