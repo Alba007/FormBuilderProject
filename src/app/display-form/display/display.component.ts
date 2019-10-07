@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {JsonStructure} from './models/JsonStructure';
 // temp
 import {ActivatedRoute} from '@angular/router';
@@ -12,38 +12,37 @@ import {DynamicFormControlEvent, DynamicFormModel, DynamicFormService} from '@ng
   styleUrls: ['./display.component.css']
 })
 export class DisplayComponent implements OnInit, AfterViewInit {
-
+  showFile = false;
+  buttonLabel = '';
   showForm = false;
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
-  pocChange: number;
   formData: JsonStructure;
 
   constructor(
     private formService: DynamicFormService,
-
     // temp
     private route: ActivatedRoute,
-
     // temp
 
   ) {
     // temp
     this.route.queryParams.subscribe(existData => {
+      console.log(existData.upload)
+      if (existData.upload !== '') {
+        console.log('mos arrifsh')
+        this.showFile = true ;
+        this.buttonLabel = existData.upload;
+      }
       this.formData = existData;
       this.formModel = [];
       this.formModel = this.formService.fromJSON(existData.form);
       this.showForm = true;
       this.formGroup = this.formService.createFormGroup(this.formModel);
     });
-
-    // temp
   }
-
   ngOnInit() {
-
   }
-
   ngAfterViewInit() {
     // this.stateControlService.formModel.subscribe(data => {
     //   this.formModel.push(data);
@@ -51,6 +50,7 @@ export class DisplayComponent implements OnInit, AfterViewInit {
     //   this.showForm = true;
     // });
   }
+
   onBlur(event: DynamicFormControlEvent) {
     console.log(event);
   }
@@ -62,6 +62,7 @@ export class DisplayComponent implements OnInit, AfterViewInit {
   onFocus(event: DynamicFormControlEvent) {
     console.log(event);
   }
+
   submit(data) {
 
     console.log(data.getRawValue());

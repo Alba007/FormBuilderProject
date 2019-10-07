@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {of, Subject} from 'rxjs';
+
 import {
   DynamicCheckboxGroupModel,
   DynamicCheckboxModel,
@@ -13,6 +14,7 @@ import {
   DynamicTextAreaModel
 } from '@ng-dynamic-forms/core';
 import {Event} from '../event';
+import {ValuesMap} from '../map';
 
 @Injectable({
   providedIn: 'root'
@@ -24,100 +26,12 @@ export class StateControlService {
   dataModel = new Subject<DynamicFormModel>();
   formModel = new Subject<DynamicFormControlModel>();
   edit = new Subject<DynamicFormControlModel>();
-  map = new Map();
   formControl: DynamicFormModel;
   toBeEdit = false;
   updateContent = new Subject<boolean>();
+  map = new Map();
 
-  constructor() {
-    this.map.set('INPUT', {
-      id: 'text',
-      label: 'text',
-      maxLength: 'number',
-      minLength: 'number',
-      placeholder: 'text',
-      mask: [],
-      required: 'Boolean',
-
-    });
-    this.map.set('EMAIL', {
-      id: 'text',
-      label: 'text',
-      maxLength: 'number',
-      placeholder: 'text',
-      mask: [],
-      required: 'Boolean',
-
-    });
-    this.map.set('FILE', {
-      id: 'text',
-      label: 'text',
-      required: 'Boolean',
-
-    });
-    this.map.set('PASSWORD', {
-      id: 'text',
-      label: 'text',
-      maxLength: 'number',
-      minLength: 'number',
-      placeholder: 'text',
-      mask: [],
-      required: 'Boolean',
-
-    });
-    this.map.set('CHECKBOX', {
-      id: 'text',
-      label: 'text',
-      required: 'Boolean'
-    });
-    this.map.set('RADIO_GROUP', {
-      id: 'text',
-      label: 'text',
-      options:
-        [{
-          label: 'text',
-          value: 'text'
-        }],
-      required: 'Boolean'
-    });
-
-    this.map.set('CHECKBOX_GROUP', {
-      id: 'text',
-      label: 'text',
-      options:
-        [{
-          id: 'text',
-          label: 'text'
-        }],
-      required: 'Boolean'
-    });
-
-    this.map.set('SLIDER', {
-      id: 'text',
-      min: 'number',
-      max: 'number',
-      vertical: 'Boolean',
-      required: 'Boolean'
-    });
-
-    this.map.set('TEXTAREA', {
-      id: 'text',
-      label: 'text',
-      minLength: 'number',
-      required: 'Boolean'
-
-    });
-
-    this.map.set('SELECT', {
-      id: 'text',
-      label: 'text',
-      options:
-        [{
-          label: 'text',
-          value: 'text'
-        }],
-      required: 'Boolean'
-    });
+  constructor(private mapStandart: ValuesMap) {
     this.eventDispatcher.subscribe((data: Event) => this.createProperties(data));
   }
 
@@ -133,6 +47,7 @@ export class StateControlService {
   }
 
   onAddFormControl(data: Event) {
+    this.map = this.mapStandart.getmap();
     this.formControl = [];
     let pair;
     if (data.payload.type) {
@@ -205,11 +120,11 @@ export class StateControlService {
         if (element.id === 'mask') {
           if (element._value) {
             this.object[element.id] = [];
-            this.object[element.id].push(new RegExp(element._value));
-            let val = this.object[element.id][0] + '';
-            val = val.substring(1, val.length - 1);
-            this.object[element.id][0] = val;
-            console.log(this.object[element.id][0], 'test@123');
+            let val = element._value + '';
+            if (val.charAt(0) === '/' && val.charAt(val.length - 1) === '/') {
+              val = val.substring(1, val.length - 1);
+            }
+            this.object[element.id].push(new RegExp(val));
           }
         } else {
           this.object[element.id] = element._value;
@@ -218,10 +133,8 @@ export class StateControlService {
     });
 
     const form = this.createFormControlDynamiclly();
-    console.log(form);
     if (this.toBeEdit) {
       this.edit.next(form);
-
     } else {
       this.formModel.next(form);
     }
@@ -302,7 +215,6 @@ export class StateControlService {
         return form;
       case 'FILE':
         this.object[attr] = 'file';
-        console.log('file');
         form = new DynamicInputModel(
           this.object
         );

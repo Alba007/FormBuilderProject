@@ -6,7 +6,7 @@ import {StateControlService} from '../services/state-control.service';
   templateUrl: './inputs.component.html',
   styleUrls: ['./inputs.component.css']
 })
-export class FormControlComponent implements OnInit {
+export class InputsComponent implements OnInit {
   items = ['INPUT', 'EMAIL', 'FILE', 'PASSWORD', 'CHECKBOX', 'CHECKBOX_GROUP', 'RADIO_GROUP', 'SLIDER', 'TEXTAREA', 'SELECT'];
   tooltip = '';
 
