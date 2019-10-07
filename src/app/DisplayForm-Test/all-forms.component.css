@@ -1,0 +1,12 @@
+.main {
+  display: flex;
+}
+
+.table {
+  width: 50%;
+}
+
+.preview {
+  margin: 0 auto;
+  width: 50%;
+}

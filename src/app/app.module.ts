@@ -4,16 +4,16 @@ import {FormBuilderComponent} from './Formbuilder/form-builder.component';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormModule} from './Formbuilder/form.module';
-import {AllFormsModule} from './all-forms/all-forms.module';
-import {AllFormsComponent} from './all-forms/all-forms.component';
-import {AllFormsRoutingModule} from './all-forms/all-forms-routing.module';
-import {MatDialogModule, MatIconModule} from '@angular/material';
+import {AllFormsModule} from './DisplayForm-Test/all-forms.module';
+import {AllFormsComponent} from './DisplayForm-Test/all-forms.component';
+import {AllFormsRoutingModule} from './DisplayForm-Test/all-forms-routing.module';
+import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormBuilderComponent,
-    AllFormsComponent
+    AllFormsComponent,
   ],
   imports: [
     FormModule,
@@ -23,6 +23,7 @@ import {MatDialogModule, MatIconModule} from '@angular/material';
     AllFormsRoutingModule,
     MatIconModule,
     MatDialogModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,7 +7,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormComponent} from './form/form.component';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
-import {FormControlComponent} from './form-control/form-control.component';
+import {InputsComponent} from './Inputs/inputs.component';
 import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
 import {ConfirmationMessageComponent} from './confirmation-message/confirmation-message.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
@@ -15,8 +15,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   declarations: [
     PropertiesComponent,
     FormComponent,
-    FormControlComponent,
-    ConfirmationMessageComponent
+    InputsComponent
 
   ],
   imports: [
@@ -36,12 +35,12 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   ],
   providers: [],
   exports: [
-    FormControlComponent,
+    InputsComponent,
     PropertiesComponent,
-    FormComponent
+    FormComponent,
+    InputsComponent
   ],
-  bootstrap: [FormComponent],
-  entryComponents: [ConfirmationMessageComponent]
+  bootstrap: [FormComponent]
 })
 export class FormModule {
 }

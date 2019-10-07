@@ -10,16 +10,13 @@
         *ngFor="let controlModel of formModel"
         [group]="formGroup" [model]="controlModel"
         (click)="controlDetails(controlModel)">
-        <button mat-raised-button color="warn" style="margin-left: 5px" type="button" (click)="delete(controlModel)">
-          Delete
-        </button>
       </dynamic-material-form-control>
       <br/>
     </form>
   </mat-card-content>
   <mat-card-footer style="display: flex">
     <mat-card-actions style="margin: 0 auto">
-      <button mat-raised-button color="accent" [disabled]="!formGroup.valid" type="button" (click)="save(formModel)"
+      <button mat-raised-button color="accent" type="button" (click)="save(formModel)"
               *ngIf="formModel.length!==0">Save
       </button>
     </mat-card-actions>
