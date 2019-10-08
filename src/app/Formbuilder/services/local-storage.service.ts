@@ -13,7 +13,7 @@ export class LocalStorageService {
 
   constructor() {
     this.newform.subscribe(dat => {
-      localStorage.setItem(dat.name, JSON.stringify(dat));
+      localStorage.setItem('1', JSON.stringify(dat));
     });
     this.editForm.subscribe(edit => {
       JSON.parse(localStorage.getItem(edit));

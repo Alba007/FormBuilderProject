@@ -54,7 +54,6 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   }
 
   save(newModel) {
-    console.log(newModel)
     if (this.formGroup.valid) {
       const event = {
         type: 'addProperties',

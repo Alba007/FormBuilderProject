@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {JsonStructure} from './models/JsonStructure';
-import {EventsService} from '../events.service';
 // temp
 import {ActivatedRoute} from '@angular/router';
 // temp
 import {FormGroup} from '@angular/forms';
-import {DynamicFormLayout, DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
-import { MY_FORM_LAYOUT} from "./custom-layout";
+import {DynamicFormControlEvent, DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 
 @Component({
   selector: 'app-display',
@@ -14,13 +12,12 @@ import { MY_FORM_LAYOUT} from "./custom-layout";
   styleUrls: ['./display.component.css']
 })
 export class DisplayComponent implements OnInit, AfterViewInit {
-
+  showFile = false;
+  buttonLabel = '';
   showForm = false;
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
-  pocChange: number;
   formData: JsonStructure;
-  formLayout: DynamicFormLayout = MY_FORM_LAYOUT;
   formname = '';
 
   @Output() focus: EventEmitter<any> = new EventEmitter();
@@ -30,7 +27,6 @@ export class DisplayComponent implements OnInit, AfterViewInit {
 
   constructor(
     private formService: DynamicFormService,
-    private event: EventsService,
     // temp
     private route: ActivatedRoute,
     // temp
@@ -38,26 +34,27 @@ export class DisplayComponent implements OnInit, AfterViewInit {
   ) {
     // temp
     this.route.queryParams.subscribe(existData => {
+      console.log(existData.form);
+      if (existData.upload !== '') {
+        this.showFile = true ;
+        this.buttonLabel = existData.upload;
+      }
       this.formData = existData;
       this.formModel = [];
       this.formModel = this.formService.fromJSON(existData.form);
       this.showForm = true;
       this.formGroup = this.formService.createFormGroup(this.formModel);
     });
-
-    // temp
   }
-
   ngOnInit() {
   }
-
   ngAfterViewInit() {
+
   }
 
   addBlurEvent(event) {
     this.blur.next(event);
   }
-
   addChangeEvent(event) {
     this.change.next(event);
   }

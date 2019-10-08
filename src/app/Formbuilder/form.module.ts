@@ -10,13 +10,15 @@ import {MatButtonModule} from '@angular/material/button';
 import {InputsComponent} from './Inputs/inputs.component';
 import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { RouterModule, Routes } from '@angular/router';
+import {FormsComponent} from '../DisplayForm-Test/forms/forms.component';
+
 @NgModule({
   declarations: [
     PropertiesComponent,
     FormComponent,
-    InputsComponent
-
-  ],
+    InputsComponent,
+ ],
   imports: [
     BrowserModule,
     DynamicFormsMaterialUIModule,
@@ -29,8 +31,10 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatCardModule,
     MatIconModule,
     MatDialogModule,
-    MatTooltipModule
-
+    MatTooltipModule,
+    RouterModule.forRoot([
+      { path: 'all-forms', component: FormsComponent  }
+    ])
   ],
   providers: [],
   exports: [

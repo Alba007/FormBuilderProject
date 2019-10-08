@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
@@ -17,29 +17,37 @@ export class FormComponent implements AfterViewInit {
   formModel: DynamicFormModel = [];
   pocChange: number;
   formData: JsonStructure;
+  showFile = false;
+  buttonLabel = '';
 
   constructor(private router: Router,
               private route: ActivatedRoute,
               private formService: DynamicFormService,
               private stateControlService: StateControlService,
-              private localStorageService: LocalStorageService, ) {
+              private localStorageService: LocalStorageService) {
     this.route.queryParams.subscribe(existData => {
       this.formData = existData;
       this.formModel = [];
+      if (existData.upload !== '') {
+        this.showFile = true;
+        this.buttonLabel = existData.upload;
+      }
       if (existData.form !== '') {
         this.formModel = this.formService.fromJSON(existData.form);
         this.showForm = true;
       }
       this.formGroup = this.formService.createFormGroup(this.formModel);
-
+      this.formGroup.disable();
     });
   }
 
   ngAfterViewInit() {
     this.stateControlService.formModel.subscribe(data => {
-      this.formModel.push(data);
+      this.controlForUplaodButton(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
+      this.formGroup.disabled;
+
     });
     this.stateControlService.edit.subscribe(edit => {
       this.formModel[this.pocChange] = edit;
@@ -48,7 +56,6 @@ export class FormComponent implements AfterViewInit {
   }
 
   controlDetails(controlModel) {
-    console.log(controlModel);
     const event = {
       type: 'addFormControl',
       payload: controlModel
@@ -58,12 +65,21 @@ export class FormComponent implements AfterViewInit {
   }
 
   save(formModel) {
+    this.showFile = false;
     this.localStorageService.newform.next({
-      name: this.formData.name,
-      description: this.formData.description,
-      form: JSON.stringify(formModel)
+      form: JSON.stringify(formModel),
+      upload: this.buttonLabel
     });
     this.formModel = [];
-    this.router.navigate(['allForms']);
+    this.router.navigate(['all-forms']);
+  }
+
+  controlForUplaodButton(data) {
+    if (data.inputType === 'file') {
+      this.showFile = true;
+      this.buttonLabel = data.label;
+    } else {
+      this.formModel.push(data);
+    }
   }
 }

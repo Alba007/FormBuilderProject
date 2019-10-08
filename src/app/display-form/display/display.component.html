@@ -19,6 +19,8 @@
                                      (focus)="addFocusEvent($event)"
                                      style="margin-bottom: 5px">
       </dynamic-material-form-control>
+      <input hidden type="file" multiple #file/>
+      <button mat-button *ngIf='showFile' (click)="file.click()" >{{buttonLabel}}</button>
       <br/>
     </form>
   </mat-card-content>
