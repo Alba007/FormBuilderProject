@@ -8,6 +8,7 @@ import {AllFormsModule} from './DisplayForm-Test/all-forms.module';
 import {AllFormsComponent} from './DisplayForm-Test/all-forms.component';
 import {AllFormsRoutingModule} from './DisplayForm-Test/all-forms-routing.module';
 import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
+import {DisplayFormModule} from './display-form/display-form.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
     AllFormsComponent,
   ],
   imports: [
+    DisplayFormModule,
     FormModule,
     AllFormsModule,
     BrowserModule,

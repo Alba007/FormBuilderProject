@@ -204,9 +204,9 @@ export class StateControlService {
       } else {
         if (element.id === 'mask') {
           if (element._value) {
-            const test = element._value + ''
+            const test = element._value + '';
             const stripped = test.replace(/[/]/g, '');
-            console.log(stripped)
+            console.log(stripped);
             this.object[element.id] = [];
             this.object[element.id].push(new RegExp(stripped));
           }
