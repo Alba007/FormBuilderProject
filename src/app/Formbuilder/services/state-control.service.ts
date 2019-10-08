@@ -131,7 +131,6 @@ export class StateControlService {
         }
       }
     });
-
     const form = this.createFormControlDynamiclly();
     if (this.toBeEdit) {
       this.edit.next(form);
@@ -192,7 +191,9 @@ export class StateControlService {
       id: controlValues,
       label: controlValues,
       inputType: type,
+
       value,
+
       required: req,
     }));
   }

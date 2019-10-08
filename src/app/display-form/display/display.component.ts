@@ -28,9 +28,8 @@ export class DisplayComponent implements OnInit, AfterViewInit {
   ) {
     // temp
     this.route.queryParams.subscribe(existData => {
-      console.log(existData.upload)
+      console.log(existData.form);
       if (existData.upload !== '') {
-        console.log('mos arrifsh')
         this.showFile = true ;
         this.buttonLabel = existData.upload;
       }

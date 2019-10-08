@@ -26,7 +26,6 @@ export class FormComponent implements AfterViewInit {
               private stateControlService: StateControlService,
               private localStorageService: LocalStorageService) {
     this.route.queryParams.subscribe(existData => {
-      console.log(existData, 'data');
       this.formData = existData;
       this.formModel = [];
       if (existData.upload !== '') {
@@ -38,6 +37,7 @@ export class FormComponent implements AfterViewInit {
         this.showForm = true;
       }
       this.formGroup = this.formService.createFormGroup(this.formModel);
+      this.formGroup.disable();
     });
   }
 
@@ -46,6 +46,8 @@ export class FormComponent implements AfterViewInit {
       this.controlForUplaodButton(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
+      this.formGroup.disabled;
+
     });
     this.stateControlService.edit.subscribe(edit => {
       this.formModel[this.pocChange] = edit;
@@ -65,13 +67,11 @@ export class FormComponent implements AfterViewInit {
   save(formModel) {
     this.showFile = false;
     this.localStorageService.newform.next({
-      name: this.formData.name,
-      description: this.formData.description,
       form: JSON.stringify(formModel),
       upload: this.buttonLabel
     });
     this.formModel = [];
-    // this.router.navigate(['allForms']);
+    this.router.navigate(['all-forms']);
   }
 
   controlForUplaodButton(data) {

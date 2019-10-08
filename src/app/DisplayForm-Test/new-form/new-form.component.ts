@@ -36,8 +36,6 @@ export class NewFormComponent implements OnInit {
 }
   save() {
     this.dialogRef.close();
-    this.myForm.name = this.formGroup.getRawValue().name;
-    this.myForm.description = this.formGroup.getRawValue().description;
     this.myForm.form = '' ;
     const json = this.myForm;
     this.router.navigate(['createForm'], {queryParams: json});
