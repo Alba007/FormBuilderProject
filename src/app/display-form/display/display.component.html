@@ -13,7 +13,6 @@
                                      *ngFor="let controlModel of formModel"
                                      [group]="formGroup"
                                      [model]="controlModel"
-                                     [layout]="formLayout"
                                      (blur)="addBlurEvent($event)"
                                      (change)="addChangeEvent($event)"
                                      (focus)="addFocusEvent($event)"
@@ -27,10 +26,9 @@
   <mat-card-footer style="display: flex">
     <mat-card-actions style="margin: 0 auto">
       <button mat-raised-button color="accent"
-              [disabled]="!formGroup.valid"
               type="button"
               (click)="submit(formGroup)"
-              *ngIf="formModel.length!==0">Save
+              *ngIf="formModel.length!==0">Back
       </button>
     </mat-card-actions>
   </mat-card-footer>

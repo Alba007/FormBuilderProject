@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {JsonStructure} from './models/JsonStructure';
 // temp
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 // temp
 import {FormGroup} from '@angular/forms';
 import {DynamicFormControlEvent, DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
@@ -27,12 +27,9 @@ export class DisplayComponent implements OnInit, AfterViewInit {
 
   constructor(
     private formService: DynamicFormService,
-    // temp
     private route: ActivatedRoute,
-    // temp
-
+    private router: Router,
   ) {
-    // temp
     this.route.queryParams.subscribe(existData => {
       console.log(existData.form);
       if (existData.upload !== '') {
@@ -68,7 +65,7 @@ export class DisplayComponent implements OnInit, AfterViewInit {
   }
 
   submit(data) {
-
-    console.log(data.getRawValue());
+    console.log(data);
+    this.router.navigate(['all-forms']);
   }
 }

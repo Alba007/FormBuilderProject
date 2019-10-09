@@ -4,9 +4,7 @@ import {FormBuilderComponent} from '../Formbuilder/form-builder.component';
 import {FormsComponent} from './forms/forms.component';
 import { DisplayComponent } from '../display-form/display/display.component';
 
-const routes
-
-: Routes = [
+const routes: Routes = [
   {path: '', redirectTo: '/forms', pathMatch: 'full'},
   {path: 'forms', component: FormsComponent},
   {path: 'createForm', component: FormBuilderComponent, data: {json : 'json'} },

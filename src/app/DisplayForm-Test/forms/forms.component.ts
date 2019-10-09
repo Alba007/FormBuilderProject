@@ -21,11 +21,12 @@ export class FormsComponent implements OnInit {
               private dialog: MatDialog,
               public router: Router,
               private localStorageService: LocalStorageService) {
-    this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
+
   }
 
 
   ngOnInit() {
+    this.dataSource.data = this.localStorageService.getAllFromLocalStorage();
   }
 
   openNewFormModal() {
@@ -33,7 +34,6 @@ export class FormsComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '80%';
     this.dialog.open(NewFormComponent, dialogConfig).afterClosed().subscribe(res => {
-
     });
   }
 
@@ -43,8 +43,8 @@ export class FormsComponent implements OnInit {
 
   preview(form) {
     this.router.navigate(['display'], {queryParams: form});
-
   }
+
 }
 
 

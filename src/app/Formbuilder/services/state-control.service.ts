@@ -158,7 +158,7 @@ export class StateControlService {
           new DynamicInputModel({
             id: 'myInput',
             label: (i < length && i >= 0) ? data.payload[attr][i].label : '',
-            value: (i < length && i >= 0) ? data.payload[attr][i++].label + '' : i++
+             value: (i < length && i >= 0) ? data.payload[attr][i++].label + '' : i++
           })];
       }
     }));
@@ -191,9 +191,7 @@ export class StateControlService {
       id: controlValues,
       label: controlValues,
       inputType: type,
-
       value,
-
       required: req,
     }));
   }

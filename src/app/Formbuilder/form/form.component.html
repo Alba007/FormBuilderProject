@@ -8,10 +8,11 @@
     <form *ngIf="showForm" [formGroup]="formGroup" style="margin: 0 auto;">
       <dynamic-material-form-control
         *ngFor="let controlModel of formModel"
-        [hidden]="controlModel['inputType'] === 'file'"
-        [group]="formGroup" [model]="controlModel"
+        [group]="formGroup"
+        [model]="controlModel"
         (click)="controlDetails(controlModel)"
-        readonly >
+         >
+        <button mat-button (click)="deleteOption(controlModel)" >Delete</button>
       </dynamic-material-form-control>
       <input hidden type="file" multiple #file/>
       <button mat-button *ngIf='showFile' (click)="file.click()" >{{buttonLabel}}</button>

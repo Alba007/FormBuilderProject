@@ -1,4 +1,4 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {DynamicFormModel, DynamicFormService} from '@ng-dynamic-forms/core';
 import {FormGroup} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
@@ -11,7 +11,7 @@ import {LocalStorageService} from '../services/local-storage.service';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-export class FormComponent implements AfterViewInit {
+export class FormComponent implements  OnInit, AfterViewInit {
   showForm = false;
   formGroup: FormGroup;
   formModel: DynamicFormModel = [];
@@ -25,8 +25,11 @@ export class FormComponent implements AfterViewInit {
               private formService: DynamicFormService,
               private stateControlService: StateControlService,
               private localStorageService: LocalStorageService) {
+
+  }
+  ngOnInit() {
     this.route.queryParams.subscribe(existData => {
-      this.formData = existData;
+      console.log(existData)
       this.formModel = [];
       if (existData.upload !== '') {
         this.showFile = true;
@@ -34,19 +37,16 @@ export class FormComponent implements AfterViewInit {
       }
       if (existData.form !== '') {
         this.formModel = this.formService.fromJSON(existData.form);
-        this.showForm = true;
       }
       this.formGroup = this.formService.createFormGroup(this.formModel);
-      this.formGroup.disable();
+      this.showForm = true;
     });
   }
-
   ngAfterViewInit() {
     this.stateControlService.formModel.subscribe(data => {
       this.controlForUplaodButton(data);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
-      this.formGroup.disabled;
 
     });
     this.stateControlService.edit.subscribe(edit => {
@@ -81,5 +81,9 @@ export class FormComponent implements AfterViewInit {
     } else {
       this.formModel.push(data);
     }
+  }
+  deleteOption(controlModel){
+    this.pocChange = this.formModel.indexOf(controlModel);
+    this.formModel.splice(this.pocChange,1);
   }
 }
