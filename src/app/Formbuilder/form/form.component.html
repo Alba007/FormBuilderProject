@@ -11,11 +11,11 @@
         [group]="formGroup"
         [model]="controlModel"
         (click)="controlDetails(controlModel)"
-         >
+        [hidden] = "controlModel.hidden">
         <button mat-button (click)="deleteOption(controlModel)" >Delete</button>
       </dynamic-material-form-control>
       <input hidden type="file" multiple #file/>
-      <button mat-button *ngIf='showFile' (click)="file.click()" >{{buttonLabel}}</button>
+      <button mat-button *ngIf='showFile' (click)="file.click()" >{{buttonFile.label}}</button>
       <br/>
     </form>
   </mat-card-content>

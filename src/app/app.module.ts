@@ -9,6 +9,7 @@ import {AllFormsComponent} from './DisplayForm-Test/all-forms.component';
 import {AllFormsRoutingModule} from './DisplayForm-Test/all-forms-routing.module';
 import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
 import {DisplayFormModule} from './display-form/display-form.module';
+import {DISABLED_MATCHER, REQUIRED_MATCHER} from '@ng-dynamic-forms/core';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {DisplayFormModule} from './display-form/display-form.module';
     MatDialogModule,
     MatCardModule,
   ],
-  providers: [],
+  providers: [DISABLED_MATCHER,
+              REQUIRED_MATCHER],
   bootstrap: [AppComponent]
 })
 export class AppModule {

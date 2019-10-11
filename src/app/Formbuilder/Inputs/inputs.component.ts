@@ -14,6 +14,7 @@ export class InputsComponent implements OnInit {
   }
 
   ngOnInit() {
+
   }
 
   createFormControl(item) {
@@ -59,4 +60,5 @@ export class InputsComponent implements OnInit {
         break;
     }
   }
+
 }

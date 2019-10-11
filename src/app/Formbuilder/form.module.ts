@@ -8,17 +8,18 @@ import {FormComponent} from './form/form.component';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {InputsComponent} from './Inputs/inputs.component';
-import {MatCardModule, MatDialogModule, MatIconModule} from '@angular/material';
+import {MatCardModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatInputModule, MatSelectModule} from '@angular/material';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import { RouterModule, Routes } from '@angular/router';
+import {RouterModule} from '@angular/router';
 import {FormsComponent} from '../DisplayForm-Test/forms/forms.component';
+import {DISABLED_MATCHER, HIDDEN_MATCHER, REQUIRED_MATCHER} from '@ng-dynamic-forms/core';
 
 @NgModule({
   declarations: [
     PropertiesComponent,
     FormComponent,
     InputsComponent,
- ],
+  ],
   imports: [
     BrowserModule,
     DynamicFormsMaterialUIModule,
@@ -33,10 +34,15 @@ import {FormsComponent} from '../DisplayForm-Test/forms/forms.component';
     MatDialogModule,
     MatTooltipModule,
     RouterModule.forRoot([
-      { path: 'all-forms', component: FormsComponent  }
-    ])
+      {path: 'all-forms', component: FormsComponent}
+    ]),
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
-  providers: [],
+  providers: [DISABLED_MATCHER,
+              HIDDEN_MATCHER,
+              REQUIRED_MATCHER],
   exports: [
     InputsComponent,
     PropertiesComponent,

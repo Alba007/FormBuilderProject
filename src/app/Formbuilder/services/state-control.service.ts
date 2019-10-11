@@ -11,7 +11,9 @@ import {
   DynamicRadioGroupModel,
   DynamicSelectModel,
   DynamicSliderModel,
-  DynamicTextAreaModel
+  DynamicTextAreaModel,
+  MATCH_DISABLED,
+  MATCH_HIDDEN, MATCH_REQUIRED
 } from '@ng-dynamic-forms/core';
 import {Event} from '../event';
 import {ValuesMap} from '../map';
@@ -23,16 +25,17 @@ export class StateControlService {
   object: any;
   control: string;
   eventDispatcher = new Subject<Event>();
-  dataModel = new Subject<DynamicFormModel>();
+  dataModel = new Subject<[DynamicFormModel, any]>();
   formModel = new Subject<DynamicFormControlModel>();
   edit = new Subject<DynamicFormControlModel>();
   formControl: DynamicFormModel;
   toBeEdit = false;
   updateContent = new Subject<boolean>();
   map = new Map();
-
+  idList = new Subject<any[]>() ;
   constructor(private mapStandart: ValuesMap) {
     this.eventDispatcher.subscribe((data: Event) => this.createProperties(data));
+
   }
 
   createProperties(data: Event) {
@@ -50,9 +53,11 @@ export class StateControlService {
     this.map = this.mapStandart.getmap();
     this.formControl = [];
     let pair;
+    let relations = '';
     if (data.payload.type) {
       this.toBeEdit = true;
       pair = this.map.get(data.payload.type);
+      relations = data.payload.relations;
       this.control = data.payload.type;
     } else {
       this.toBeEdit = false;
@@ -83,17 +88,20 @@ export class StateControlService {
         }
       }
     }
-    this.dataModel.next(this.formControl);
+    this.dataModel.next([this.formControl, relations]);
   }
 
   onAddProperties(data) {
+    console.log(data.relations);
     let attr = '';
     this.object = {id: ''};
     if (this.control === 'SELECT') {
       attr = 'options';
       this.object[attr] = of([]);
     }
+    this.setRelations(data);
     data.payload.forEach(element => {
+
       if (element.type === 'ARRAY') {
         if (element.id === 'options') {
           attr = 'options';
@@ -132,6 +140,7 @@ export class StateControlService {
       }
     });
     const form = this.createFormControlDynamiclly();
+    console.log(this.idList, 'listaMeId');
     if (this.toBeEdit) {
       this.edit.next(form);
     } else {
@@ -149,7 +158,6 @@ export class StateControlService {
     }
     length = data.payload[attr].length;
     let i = -1;
-
     this.formControl.push(new DynamicFormArrayModel({
       id: controlValues,
       initialCount: length,
@@ -158,7 +166,7 @@ export class StateControlService {
           new DynamicInputModel({
             id: 'myInput',
             label: (i < length && i >= 0) ? data.payload[attr][i].label : '',
-             value: (i < length && i >= 0) ? data.payload[attr][i++].label + '' : i++
+            value: (i < length && i >= 0) ? data.payload[attr][i++].label + '' : i++
           })];
       }
     }));
@@ -251,6 +259,32 @@ export class StateControlService {
       case 'TEXTAREA':
         form = new DynamicTextAreaModel(this.object);
         return form;
+    }
+  }
+
+  setRelations(data) {
+    if (data.relations !== '') {
+      const attr = 'relations';
+      this.object[attr] = [];
+      switch (data.relations.match) {
+        case 'MATCH_DISABLED':
+          this.object[attr].push({
+            match: MATCH_DISABLED,
+            when: [{id: data.relations.relationId, value: data.relations.relationValue}]
+          });
+          break;
+        case 'MATCH_HIDDEN':
+          this.object[attr].push({
+            match: MATCH_HIDDEN,
+            when: [{id: data.relations.relationId, value: data.relations.relationValue}]
+          });
+          break;
+        case 'MATCH_REQUIRED':
+          this.object[attr].push({
+            match: MATCH_REQUIRED,
+            when: [{id: data.relations.relationId, value: data.relations.relationValue}]
+          });
+      }
     }
   }
 }

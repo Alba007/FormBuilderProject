@@ -1,7 +1,8 @@
 export interface Event {
   type: string;
   payload?: any;
-  formData?: any;
+  relations?: any;
+  listWithId?: any;
 }
 
 export interface NewForm {
