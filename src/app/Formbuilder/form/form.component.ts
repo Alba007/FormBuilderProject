@@ -16,9 +16,10 @@ export class FormComponent implements OnInit, AfterViewInit {
   formModel: DynamicFormModel = [];
   pocChange: number;
   showFile = false;
-  buttonFile: {
+  buttonFile = {
     id: '',
-    label: ''
+    label: '',
+    type: 'FILE'
   };
   listId = [];
 
@@ -27,25 +28,23 @@ export class FormComponent implements OnInit, AfterViewInit {
               private formService: DynamicFormService,
               private stateControlService: StateControlService,
               private localStorageService: LocalStorageService) {
-
+    this.listId = [];
   }
 
   ngOnInit() {
     this.route.queryParams.subscribe(existData => {
+      console.log(existData);
       this.formModel = [];
       if (existData.uploadID) {
         this.showFile = true;
-        this.buttonFile = {
-          id: existData.uploadID,
-          label: existData.uploadLabel
-        };
+        this.buttonFile.id = existData.uploadID;
+        this.buttonFile.label = existData.uploadLabel;
       }
       if (existData.form !== '') {
         this.formModel = this.formService.fromJSON(existData.form);
         this.findAllId();
         this.stateControlService.idList.next(this.listId);
       }
-      console.log(this.formModel);
       this.formGroup = this.formService.createFormGroup(this.formModel);
       this.showForm = true;
     });
@@ -73,6 +72,7 @@ export class FormComponent implements OnInit, AfterViewInit {
   }
 
   save(formModel) {
+    console.log(this.listId);
     this.showFile = false;
     this.localStorageService.newform.next({
       form: JSON.stringify(formModel),
@@ -84,29 +84,41 @@ export class FormComponent implements OnInit, AfterViewInit {
   }
 
   controlForUplaodButton(data) {
-    this.buttonFile = {
-      id: data.id,
-      label: data.label
-    };
-    console.log(this.buttonFile);
+
     if (data.inputType === 'file') {
       this.showFile = true;
+      this.buttonFile.id = data.id;
+      this.buttonFile.label = data.label;
+
     } else {
       this.formModel.push(data);
     }
   }
 
-  deleteOption(controlModel) {
+  deleteOption(controlModel, id) {
+    this.listId.splice(this.listId.indexOf(id), 1);
+    console.log(this.listId);
+    this.stateControlService.idList.next(this.listId);
     this.pocChange = this.formModel.indexOf(controlModel);
     this.formModel.splice(this.pocChange, 1);
   }
 
   findAllId() {
-    this.formModel.map(el => {
+    console.log(this.formModel);
+    this.listId = [];
+    this.formModel.forEach(el => {
       this.listId.push(el.id);
     });
     if (this.buttonFile.id !== '') {
       this.listId.push(this.buttonFile.id);
     }
   }
+
+  // editButton() {
+  //   const event = {
+  //     type: 'addFormControl',
+  //     payload: this.buttonFile
+  //   };
+  //   this.stateControlService.eventDispatcher.next(event);
+  // }
 }

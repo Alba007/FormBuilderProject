@@ -36,7 +36,6 @@ export class ValuesMap {
     this._map.set('FILE', {
       id: 'text',
       label: 'text',
-      required: 'Boolean',
     });
     this._map.set('PASSWORD', {
       id: 'text',
@@ -77,6 +76,7 @@ export class ValuesMap {
 
     this._map.set('SLIDER', {
       id: 'text',
+      label: 'text',
       min: 'number',
       max: 'number',
       vertical: 'Boolean',

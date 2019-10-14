@@ -12,10 +12,11 @@
         [model]="controlModel"
         (click)="controlDetails(controlModel)"
         [hidden] = "controlModel.hidden">
-        <button mat-button (click)="deleteOption(controlModel)" >Delete</button>
+        <button mat-button (click)="deleteOption(controlModel, controlModel.id)" >Delete</button>
       </dynamic-material-form-control>
       <input hidden type="file" multiple #file/>
       <button mat-button *ngIf='showFile' (click)="file.click()" >{{buttonFile.label}}</button>
+<!--      <button mat-button (click)="editButton()" >Edit</button>-->
       <br/>
     </form>
   </mat-card-content>

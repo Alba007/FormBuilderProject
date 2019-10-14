@@ -1,6 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {DynamicFormArrayModel, DynamicFormModel, DynamicFormService, MATCH_DISABLED, MATCH_HIDDEN} from '@ng-dynamic-forms/core';
-import {FormArray, FormControl, FormGroup} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StateControlService} from '../services/state-control.service';
 import {Router} from '@angular/router';
 
@@ -19,6 +19,7 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   formArrayControl: FormArray;
   formArrayModel;
   listId = [];
+  idClicked = '';
 
   constructor(private formService: DynamicFormService,
               private router: Router,
@@ -26,14 +27,16 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
               private cd: ChangeDetectorRef) {
     this.formModel = [];
     this.relations = new FormGroup({
-      relatedOption: new FormControl(''),
-      relatedId: new FormControl(''),
-      relatedValue: new FormControl(''),
+      relatedOption: new FormControl('', Validators.required),
+      relatedId: new FormControl('', Validators.required),
+      relatedValue: new FormControl('', Validators.required),
     });
   }
 
   ngOnInit() {
+    this.listId = [];
     this.stateControlService.idList.subscribe(list => {
+      console.log(list);
       this.listId = list;
     });
     this.stateControlService.updateContent.subscribe(res => {
@@ -46,34 +49,21 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {
+      console.log(data);
+      const id = data[0][0] as any;
+      if (id._value === null) {
+        this.idClicked = '';
+      } else {
+        this.idClicked = id._value;
+      }
       this.formGroup = this.formService.createFormGroup(data[0]);
       this.formModel = data[0];
       this.formArrayControl = this.formGroup.get('options') as FormArray;
       this.formArrayModel = this.formService.findById('options', this.formModel);
       this.showForm = true;
       this.hasOptions = this.formArrayControl != null;
-      if (data[1] !== '') {
-        this.related = true;
-        let match1;
-        if (data[1].length !== 0) {
-          switch (data[1][0].match) {
-            case 'DISABLED':
-              match1 = 'MATCH_DISABLED';
-              break;
-            case 'HIDDEN':
-              match1 = 'MATCH_HIDDEN';
-              break;
-            case 'REQUIRED':
-              match1 = 'MATCH_REQUIRED';
-          }
-          this.setOptions(match1, data[1][0].when[0].id, data[1][0].when[0].value);
-        } else {
-          this.related = false;
-          this.setOptions('', '', '');
-        }
-      } else {
-        this.related = false;
-      }
+
+      this.setRelations(data);
     });
   }
 
@@ -86,6 +76,18 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   }
 
   save(newModel) {
+    if (this.related) {
+      if (this.relations.invalid) {
+        return;
+      }
+    }
+    const exist = this.listId.indexOf(this.idClicked);
+    if (exist >= 0) {
+      this.listId[exist] = newModel[0]._value;
+    } else {
+      this.listId.push(newModel[0]._value);
+    }
+    this.stateControlService.idList.next(this.listId);
     let relats;
     if (this.related) {
       relats = {
@@ -96,7 +98,6 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
     } else {
       relats = '';
     }
-    console.log(relats);
     if (this.formGroup.valid) {
       const event = {
         type: 'addProperties',
@@ -118,4 +119,31 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
       relatedValue: value
     });
   }
+
+  setRelations(data) {
+    if (data[1] !== '') {
+      this.related = true;
+      let match1;
+      if (data[1].length !== 0) {
+        switch (data[1][0].match) {
+          case 'DISABLED':
+            match1 = 'MATCH_DISABLED';
+            break;
+          case 'HIDDEN':
+            match1 = 'MATCH_HIDDEN';
+            break;
+          case 'REQUIRED':
+            match1 = 'MATCH_REQUIRED';
+        }
+        this.setOptions(match1, data[1][0].when[0].id, data[1][0].when[0].value);
+      } else {
+        this.related = false;
+        this.setOptions('', '', '');
+      }
+    } else {
+      this.related = false;
+    }
+  }
+
+
 }

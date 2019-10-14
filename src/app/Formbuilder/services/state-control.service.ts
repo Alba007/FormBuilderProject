@@ -13,7 +13,8 @@ import {
   DynamicSliderModel,
   DynamicTextAreaModel,
   MATCH_DISABLED,
-  MATCH_HIDDEN, MATCH_REQUIRED
+  MATCH_HIDDEN,
+  MATCH_REQUIRED
 } from '@ng-dynamic-forms/core';
 import {Event} from '../event';
 import {ValuesMap} from '../map';
@@ -32,7 +33,8 @@ export class StateControlService {
   toBeEdit = false;
   updateContent = new Subject<boolean>();
   map = new Map();
-  idList = new Subject<any[]>() ;
+  idList = new Subject<any[]>();
+
   constructor(private mapStandart: ValuesMap) {
     this.eventDispatcher.subscribe((data: Event) => this.createProperties(data));
 
@@ -50,6 +52,7 @@ export class StateControlService {
   }
 
   onAddFormControl(data: Event) {
+    console.log(data, 'aa')
     this.map = this.mapStandart.getmap();
     this.formControl = [];
     let pair;
@@ -67,24 +70,26 @@ export class StateControlService {
     let valueOfControl;
     let req;
     for (const controlValues in pair) {
-      controlValues === 'id' ? req = true : req = null;
-      valueOfControl = data.payload[controlValues];
-      if (pair[controlValues] === 'number' || pair[controlValues] === 'text') {
-        this.createInputWithDifferentTypes(pair[controlValues], controlValues, req, valueOfControl);
-      } else {
-        if (pair[controlValues] === 'Boolean') {
-          this.createCheckbox(controlValues, valueOfControl);
-        }
-      }
-      if (controlValues === 'options') {
-        if (data.payload._options || data.payload.group) {
-          this.createOptionsFull(data, controlValues);
+      if (pair.hasOwnProperty(controlValues)) {
+        controlValues === 'id' ? req = true : req = null;
+        valueOfControl = data.payload[controlValues];
+        if (pair[controlValues] === 'number' || pair[controlValues] === 'text') {
+          this.createInputWithDifferentTypes(pair[controlValues], controlValues, req, valueOfControl);
         } else {
-          this.createOptionsEmpty(controlValues);
+          if (pair[controlValues] === 'Boolean') {
+            this.createCheckbox(controlValues, valueOfControl);
+          }
         }
-      } else {
-        if (controlValues === 'mask') {
-          this.createInputWithDifferentTypes('text', controlValues, req, valueOfControl);
+        if (controlValues === 'options') {
+          if (data.payload._options || data.payload.group) {
+            this.createOptionsFull(data, controlValues);
+          } else {
+            this.createOptionsEmpty(controlValues);
+          }
+        } else {
+          if (controlValues === 'mask') {
+            this.createInputWithDifferentTypes('text', controlValues, req, valueOfControl);
+          }
         }
       }
     }

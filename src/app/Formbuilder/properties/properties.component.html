@@ -17,7 +17,8 @@
       <section class="example-section">
         <mat-checkbox class="example-margin"
                       [checked]="related"
-                      (change)="related = !related">related
+                      (change)="related = !related"
+                      [disabled]="listId.length<=1">related
         </mat-checkbox>
       </section>
       <section class="example-section" *ngIf="related">
@@ -35,14 +36,13 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <span> With:</span>
-        <mat-form-field class="example-full-width">
+        <mat-form-field>
+          <mat-label>With</mat-label>
           <mat-select formControlName="relatedId">
-            <mat-option *ngFor="let item of listId" value="item">
+            <mat-option *ngFor="let item of listId; " [value]="item" [disabled]="idClicked === item">
               {{item}}
             </mat-option>
           </mat-select>
-
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Value" formControlName="relatedValue">
