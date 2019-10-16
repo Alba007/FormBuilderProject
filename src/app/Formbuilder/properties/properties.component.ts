@@ -36,7 +36,6 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.listId = [];
     this.stateControlService.idList.subscribe(list => {
-      console.log(list);
       this.listId = list;
     });
     this.stateControlService.updateContent.subscribe(res => {
@@ -49,7 +48,6 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.cd.detectChanges();
     this.stateControlService.dataModel.subscribe(data => {
-      console.log(data);
       const id = data[0][0] as any;
       if (id._value === null) {
         this.idClicked = '';
@@ -62,7 +60,6 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
       this.formArrayModel = this.formService.findById('options', this.formModel);
       this.showForm = true;
       this.hasOptions = this.formArrayControl != null;
-
       this.setRelations(data);
     });
   }
@@ -142,8 +139,7 @@ export class PropertiesComponent implements AfterViewInit, OnInit {
       }
     } else {
       this.related = false;
+      this.setOptions('', '', '');
     }
   }
-
-
 }

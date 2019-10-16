@@ -33,7 +33,6 @@ export class FormComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(existData => {
-      console.log(existData);
       this.formModel = [];
       if (existData.uploadID) {
         this.showFile = true;
@@ -72,7 +71,6 @@ export class FormComponent implements OnInit, AfterViewInit {
   }
 
   save(formModel) {
-    console.log(this.listId);
     this.showFile = false;
     this.localStorageService.newform.next({
       form: JSON.stringify(formModel),
@@ -84,12 +82,10 @@ export class FormComponent implements OnInit, AfterViewInit {
   }
 
   controlForUplaodButton(data) {
-
     if (data.inputType === 'file') {
       this.showFile = true;
       this.buttonFile.id = data.id;
       this.buttonFile.label = data.label;
-
     } else {
       this.formModel.push(data);
     }
@@ -97,14 +93,12 @@ export class FormComponent implements OnInit, AfterViewInit {
 
   deleteOption(controlModel, id) {
     this.listId.splice(this.listId.indexOf(id), 1);
-    console.log(this.listId);
     this.stateControlService.idList.next(this.listId);
     this.pocChange = this.formModel.indexOf(controlModel);
     this.formModel.splice(this.pocChange, 1);
   }
 
   findAllId() {
-    console.log(this.formModel);
     this.listId = [];
     this.formModel.forEach(el => {
       this.listId.push(el.id);
@@ -113,12 +107,4 @@ export class FormComponent implements OnInit, AfterViewInit {
       this.listId.push(this.buttonFile.id);
     }
   }
-
-  // editButton() {
-  //   const event = {
-  //     type: 'addFormControl',
-  //     payload: this.buttonFile
-  //   };
-  //   this.stateControlService.eventDispatcher.next(event);
-  // }
 }

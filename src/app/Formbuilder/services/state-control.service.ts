@@ -52,7 +52,7 @@ export class StateControlService {
   }
 
   onAddFormControl(data: Event) {
-    console.log(data, 'aa')
+    console.log(data, 'aa');
     this.map = this.mapStandart.getmap();
     this.formControl = [];
     let pair;
